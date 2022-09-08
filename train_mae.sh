@@ -22,8 +22,8 @@ srun python -u /scratch/eo41/mae/train_mae.py \
 	--model 'mae_vit_large_patch16' \
 	--batch_size_per_gpu 256 \
 	--num_workers 4 \
-	--lr 0.0005 \
-	--min_lr 0.0005 \
+	--lr 0.0003 \
+	--min_lr 0.0003 \
 	--weight_decay 0.0 \
 	--output_dir "/scratch/eo41/mae/models_vitl" \
 	--data_path "/scratch/eo41/data/saycam/SAY_5fps_300s_{000000..000009}.tar" \
