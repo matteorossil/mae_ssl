@@ -200,9 +200,12 @@ def train_one_epoch(model: torch.nn.Module, data_loader: Iterable, optimizer: to
             train_stats = {k: meter.global_avg for k, meter in metric_logger.meters.items()}
             log_stats = {**{f'train_{k}': v for k, v in train_stats.items()}, 'it': GLOBAL_ITER}
 
-        if misc.is_main_process():
-            with (Path(args.output_dir) / (args.save_prefix + "_log.txt")).open("a") as f:
-                f.write(json.dumps(log_stats) + "\n")
+            if misc.is_main_process():
+                with (Path(args.output_dir) / (args.save_prefix + "_log.txt")).open("a") as f:
+                    f.write(json.dumps(log_stats) + "\n")
+
+            # start a fresh logger to wipe off old stats
+            metric_logger = misc.MetricLogger(delimiter="  ")
 
         GLOBAL_ITER += 1
 
