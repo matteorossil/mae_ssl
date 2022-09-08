@@ -135,7 +135,7 @@ def main(args):
     print("Starting MAE training!")
     start_time = time.time()
     for epoch in range(args.start_epoch, args.epochs):
-        train_stats = train_one_epoch(model, data_loader, optimizer, device, epoch, loss_scaler, log_writer=log_writer, args=args)
+        train_stats = train_one_epoch(model, data_loader, optimizer, device, epoch, loss_scaler, args=args)
 
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
@@ -146,7 +146,7 @@ def preprocess(sample):
     return sample[0]
 
 
-def train_one_epoch(model: torch.nn.Module, data_loader: Iterable, optimizer: torch.optim.Optimizer, device: torch.device, epoch: int, loss_scaler, log_writer=None, args=None):
+def train_one_epoch(model: torch.nn.Module, data_loader: Iterable, optimizer: torch.optim.Optimizer, device: torch.device, epoch: int, loss_scaler, args=None):
     
     global GLOBAL_ITER
 
