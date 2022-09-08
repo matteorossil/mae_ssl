@@ -7,8 +7,8 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=200GB
 #SBATCH --time=00:10:00
-#SBATCH --job-name=dino_train
-#SBATCH --output=dino_train_%A_%a.out
+#SBATCH --job-name=train_mae
+#SBATCH --output=train_mae_%A_%a.out
 #SBATCH --array=0
 
 export MASTER_ADDR=$(hostname -s)
