@@ -64,7 +64,6 @@ def get_args_parser():
     parser.add_argument('--log_dir', default='./output_dir', help='path where to tensorboard log')
     parser.add_argument('--device', default='cuda', help='device to use for training / testing')
     parser.add_argument('--seed', default=0, type=int)
-    parser.add_argument('--resume', default='', help='resume from checkpoint')
     parser.add_argument('--saveckp_freq', default=5000, type=int, help='Save checkpoint every x iterations.')
     parser.add_argument('--start_epoch', default=0, type=int, metavar='N', help='start epoch')
     parser.add_argument('--num_workers', default=10, type=int)
