@@ -57,15 +57,13 @@ def get_args_parser():
 
     # Model parameters
     parser.add_argument('--model', default='vit_large_patch16', type=str, metavar='MODEL', help='Name of model to train')
-
-    # Optimizer parameters
-    parser.add_argument('--lr', type=float, default=0.0005, metavar='LR', help='learning rate (absolute lr)')
-
-    # * Finetuning params
-    parser.add_argument('--finetune', default='', help='finetune from checkpoint')
+    parser.add_argument('--resume', default='', help='resume from checkpoint')
     parser.add_argument('--global_pool', action='store_true')
     parser.set_defaults(global_pool=False)
     parser.add_argument('--cls_token', action='store_false', dest='global_pool', help='Use class token instead of global pool for classification')
+
+    # Optimizer parameters
+    parser.add_argument('--lr', type=float, default=0.0005, metavar='LR', help='learning rate (absolute lr)')
 
     # Dataset parameters
     parser.add_argument('--nb_classes', default=1000, type=int, help='number of the classification types')
@@ -78,6 +76,7 @@ def get_args_parser():
     parser.add_argument('--n_train', default=1, type=int, help='Number of training images.')
     parser.add_argument('--n_val', default=1, type=int, help='Number of validation images.')
 
+    # training parameters
     parser.add_argument('--start_epoch', default=0, type=int, metavar='N', help='start epoch')
     parser.add_argument('--eval', action='store_true', help='Perform evaluation only')
     parser.add_argument('--num_workers', default=10, type=int)
@@ -151,10 +150,10 @@ def main(args):
     # set up and load model
     model = models_vit.__dict__[args.model](num_classes=args.nb_classes, global_pool=args.global_pool)
 
-    if args.finetune and not args.eval:
-        checkpoint = torch.load(args.finetune, map_location='cpu')
+    if args.resume and not args.eval:
+        checkpoint = torch.load(args.resume, map_location='cpu')
 
-        print("Load pre-trained checkpoint from: %s" % args.finetune)
+        print("Load pre-trained checkpoint from: %s" % args.resume)
         checkpoint_model = checkpoint['model']
         state_dict = model.state_dict()
         for k in ['head.weight', 'head.bias']:
@@ -217,6 +216,7 @@ def main(args):
     for epoch in range(args.start_epoch, args.epochs):
 
         train_stats = train_one_epoch(model, criterion, train_loader, optimizer, device, epoch, loss_scaler, max_norm=None, log_writer=log_writer, args=args)
+
         if args.output_dir:
             misc.save_model(args=args, model=model, model_without_ddp=model_without_ddp, optimizer=optimizer, loss_scaler=loss_scaler, epoch=epoch)
 
