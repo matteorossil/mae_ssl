@@ -34,7 +34,7 @@ echo $ARCH
 # labeled_s
 srun python -u /scratch/eo41/mae/eval_linear_wds.py \
 	--model $ARCH \
-	--finetune /scratch/eo41/mae/models_${MODEL}/${SUBJECT}_5fps_${MODEL}_checkpoint.pth \
+	--resume /scratch/eo41/mae/models_${MODEL}/${SUBJECT}_5fps_${MODEL}_checkpoint.pth \
 	--save_prefix ${SUBJECT}_5fps_${MODEL} \
 	--batch_size 512 \
 	--epochs 500 \
