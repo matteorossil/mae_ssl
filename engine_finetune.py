@@ -22,22 +22,16 @@ import util.misc as misc
 
 
 def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module, data_loader: Iterable, optimizer: torch.optim.Optimizer,
-                    device: torch.device, epoch: int, loss_scaler, max_norm: float = 0, mixup_fn: Optional[Mixup] = None, log_writer=None, args=None):
+                    device: torch.device, epoch: int, loss_scaler, max_norm: float = 0, mixup_fn: Optional[Mixup] = None):
 
     model.train(True)
     metric_logger = misc.MetricLogger(delimiter="  ")
     metric_logger.add_meter('lr', misc.SmoothedValue(window_size=1, fmt='{value:.6f}'))
     header = 'Epoch: [{}]'.format(epoch)
-    print_freq = args.n_train // args.batch_size
-
-    accum_iter = args.accum_iter
 
     optimizer.zero_grad()
 
-    if log_writer is not None:
-        print('log_dir: {}'.format(log_writer.log_dir))
-
-    for data_iter_step, (samples, targets) in enumerate(metric_logger.log_every(data_loader, print_freq, header)):
+    for _, (samples, targets) in enumerate(metric_logger.log_every(data_loader, len(data_loader) // 1, header)):
 
         samples = samples.to(device, non_blocking=True)
         targets = targets.to(device, non_blocking=True)
@@ -55,10 +49,8 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module, data_loa
             print("Loss is {}, stopping training".format(loss_value))
             sys.exit(1)
 
-        loss /= accum_iter
-        loss_scaler(loss, optimizer, clip_grad=max_norm, parameters=model.parameters(), create_graph=False, update_grad=(data_iter_step + 1) % accum_iter == 0)
-        if (data_iter_step + 1) % accum_iter == 0:
-            optimizer.zero_grad()
+        loss_scaler(loss, optimizer, clip_grad=max_norm, parameters=model.parameters(), create_graph=False, update_grad=True)
+        optimizer.zero_grad()
 
         torch.cuda.synchronize()
 
@@ -71,15 +63,6 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module, data_loa
 
         metric_logger.update(lr=max_lr)
 
-        loss_value_reduce = misc.all_reduce_mean(loss_value)
-        if log_writer is not None and (data_iter_step + 1) % accum_iter == 0:
-            """ We use epoch_1000x as the x-axis in tensorboard.
-            This calibrates different curves when batch size changes.
-            """
-            epoch_1000x = int((data_iter_step / len(data_loader) + epoch) * 1000)
-            log_writer.add_scalar('loss', loss_value_reduce, epoch_1000x)
-            log_writer.add_scalar('lr', max_lr, epoch_1000x)
-
     # gather the stats from all processes
     metric_logger.synchronize_between_processes()
     print("Averaged stats:", metric_logger)
@@ -87,7 +70,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module, data_loa
 
 
 @torch.no_grad()
-def evaluate(data_loader, model, device, args=None):
+def evaluate(data_loader, model, device):
     criterion = torch.nn.CrossEntropyLoss()
 
     metric_logger = misc.MetricLogger(delimiter="  ")
@@ -96,7 +79,7 @@ def evaluate(data_loader, model, device, args=None):
     # switch to evaluation mode
     model.eval()
 
-    for batch in metric_logger.log_every(data_loader, args.n_val // args.batch_size, header):
+    for batch in metric_logger.log_every(data_loader, len(data_loader) // 1, header):
         images = batch[0]
         target = batch[-1]
         images = images.to(device, non_blocking=True)

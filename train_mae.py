@@ -20,7 +20,6 @@ from pathlib import Path
 
 import torch
 import torch.backends.cudnn as cudnn
-from torch.utils.tensorboard import SummaryWriter
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import webdataset as wds
@@ -46,6 +45,7 @@ def get_args_parser():
 
     # Model parameters
     parser.add_argument('--model', default='mae_vit_large_patch16', type=str, metavar='MODEL', help='Name of model to train')
+    parser.add_argument('--resume', default='', help='resume from checkpoint')
     parser.add_argument('--input_size', default=224, type=int, help='images input size')
     parser.add_argument('--mask_ratio', default=0.75, type=float, help='Masking ratio (percentage of removed patches).')
     parser.add_argument('--norm_pix_loss', action='store_true', help='Use (per-patch) normalized pixels as targets for computing loss')
@@ -191,7 +191,6 @@ def train_one_epoch(model: torch.nn.Module, data_loader: Iterable, optimizer: to
             }
 
             misc.save_on_master(save_dict, os.path.join(args.output_dir, args.save_prefix + '_checkpoint.pth'))
-            misc.save_on_master(save_dict, os.path.join(args.output_dir, args.save_prefix + f'checkpoint{GLOBAL_ITER:04}.pth'))
 
             # gather the stats from all processes
             metric_logger.synchronize_between_processes()
