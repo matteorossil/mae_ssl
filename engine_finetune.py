@@ -8,12 +8,13 @@
 # DeiT: https://github.com/facebookresearch/deit
 # BEiT: https://github.com/microsoft/unilm/tree/master/beit
 # --------------------------------------------------------
-
+import os
 import math
 import sys
 from typing import Iterable, Optional
 
 import torch
+import numpy as np
 
 from timm.data import Mixup
 from timm.utils import accuracy
@@ -70,29 +71,37 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module, data_loa
 
 
 @torch.no_grad()
-def evaluate(data_loader, model, device):
+def evaluate(data_loader, model, device, output_dir):
     criterion = torch.nn.CrossEntropyLoss()
 
     metric_logger = misc.MetricLogger(delimiter="  ")
     header = 'Test:'
 
+    task = os.path.split(output_dir)[-1]
+    if  task == 'places365':
+        places365_val_labels = torch.from_numpy(np.load('places365_val_labels.npz')['labels'])
+        it = 0
+
     # switch to evaluation mode
     model.eval()
 
-    for batch in metric_logger.log_every(data_loader, len(data_loader) // 1, header):
-        images = batch[0]
-        target = batch[-1]
-        images = images.to(device, non_blocking=True)
-        target = target.to(device, non_blocking=True)
+    for inp, target in metric_logger.log_every(data_loader, len(data_loader) // 1, header):
+        inp = inp.to(device, non_blocking=True)
+        if task== 'places365':
+            target = places365_val_labels[it*target.size(0):(it+1)*target.size(0)]
+            target = target.to(device, non_blocking=True)
+            it += 1
+        else:
+            target = target.to(device, non_blocking=True)
 
         # compute output
         with torch.cuda.amp.autocast():
-            output = model(images)
+            output = model(inp)
             loss = criterion(output, target)
 
         acc1, acc5 = accuracy(output, target, topk=(1, 5))
 
-        batch_size = images.shape[0]
+        batch_size = inp.shape[0]
         metric_logger.update(loss=loss.item())
         metric_logger.meters['acc1'].update(acc1.item(), n=batch_size)
         metric_logger.meters['acc5'].update(acc5.item(), n=batch_size)

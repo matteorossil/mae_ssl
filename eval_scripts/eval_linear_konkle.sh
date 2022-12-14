@@ -4,8 +4,8 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=240GB
 #SBATCH --time=8:00:00
-#SBATCH --job-name=mae_lin_labeled_s
-#SBATCH --output=mae_lin_labeled_s_%A_%a.out
+#SBATCH --job-name=mae_lin_konkle
+#SBATCH --output=mae_lin_konkle_%A_%a.out
 #SBATCH --array=0-11
 
 module purge
@@ -23,20 +23,19 @@ echo $MODEL
 echo $SUBJECT
 echo $ARCH
 
-# labeled_s
+# konkle
 python -u /scratch/eo41/mae/eval_linear.py \
 	--model ${ARCH} \
 	--resume "/scratch/eo41/mae/models_${MODEL}/${SUBJECT}_5fps_${MODEL}_checkpoint.pth" \
-	--save_prefix ${SUBJECT}_5fps_${MODEL} \
+	--save_prefix ${SUBJECT}_${MODEL} \
 	--batch_size 1024 \
 	--epochs 300 \
 	--num_workers 8 \
 	--lr 0.0005 \
-	--output_dir "/scratch/eo41/mae/evals/labeled_s" \
-	--train_data_path "/vast/eo41/data/labeled_s" \
+	--output_dir "/scratch/eo41/mae/evals/konkle" \
+	--train_data_path "/vast/eo41/data/konkle" \
 	--val_data_path "" \
-	--num_labels 26 \
-	--split \
-	--subsample
+	--num_labels 240 \
+	--split
 	
 echo "Done"

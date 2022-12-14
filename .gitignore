@@ -3,6 +3,8 @@
 *.pth
 *.tar
 *.ckpt
+*.out
+*.npz
 
 # Directories
 /__pycache__

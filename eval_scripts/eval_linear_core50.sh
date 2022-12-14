@@ -3,9 +3,9 @@
 #SBATCH --gres=gpu:a100:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=240GB
-#SBATCH --time=8:00:00
-#SBATCH --job-name=mae_lin_labeled_s
-#SBATCH --output=mae_lin_labeled_s_%A_%a.out
+#SBATCH --time=9:00:00
+#SBATCH --job-name=mae_lin_core50
+#SBATCH --output=mae_lin_core50_%A_%a.out
 #SBATCH --array=0-11
 
 module purge
@@ -23,20 +23,18 @@ echo $MODEL
 echo $SUBJECT
 echo $ARCH
 
-# labeled_s
+# core50
 python -u /scratch/eo41/mae/eval_linear.py \
 	--model ${ARCH} \
 	--resume "/scratch/eo41/mae/models_${MODEL}/${SUBJECT}_5fps_${MODEL}_checkpoint.pth" \
-	--save_prefix ${SUBJECT}_5fps_${MODEL} \
+	--save_prefix ${SUBJECT}_${MODEL} \
 	--batch_size 1024 \
-	--epochs 300 \
+	--epochs 50 \
 	--num_workers 8 \
 	--lr 0.0005 \
-	--output_dir "/scratch/eo41/mae/evals/labeled_s" \
-	--train_data_path "/vast/eo41/data/labeled_s" \
-	--val_data_path "" \
-	--num_labels 26 \
-	--split \
-	--subsample
+	--output_dir "/scratch/eo41/mae/evals/core50" \
+	--train_data_path "/vast/eo41/data/core50/train" \
+	--val_data_path "/vast/eo41/data/core50/val" \
+	--num_labels 50
 	
 echo "Done"
