@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --gres=gpu:a100:1
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=16
 #SBATCH --mem=240GB
 #SBATCH --time=48:00:00
 #SBATCH --job-name=mae_lin_imagenet
@@ -30,7 +30,7 @@ python -u /scratch/eo41/mae/eval_linear.py \
 	--save_prefix ${SUBJECT}_${MODEL} \
 	--batch_size 1024 \
 	--epochs 50 \
-	--num_workers 8 \
+	--num_workers 16 \
 	--lr 0.0005 \
 	--output_dir "/scratch/eo41/mae/evals/imagenet" \
 	--train_data_path "/scratch/work/public/imagenet/train" \
