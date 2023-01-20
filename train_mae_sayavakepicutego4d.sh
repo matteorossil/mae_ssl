@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=1
-#SBATCH --gres=gpu:a100:1
-#SBATCH --cpus-per-task=16
+#SBATCH --ntasks-per-node=2
+#SBATCH --gres=gpu:a100:2
+#SBATCH --cpus-per-task=8
 #SBATCH --mem=240GB
 #SBATCH --time=48:00:00
 #SBATCH --job-name=train_mae_sayavakepicutego4d
@@ -12,10 +12,10 @@
 
 export MASTER_ADDR=$(hostname -s)
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
-export WORLD_SIZE=1
+export WORLD_SIZE=2
 
 module purge
-module load cuda/11.3.1
+module load cuda/11.6.2
 
 DATAS=(
 	"sayavakepicutego4d_{000000..000017}" 
@@ -55,43 +55,43 @@ SAVE=${SAVES[$SLURM_ARRAY_TASK_ID]}
 echo $DATA
 echo $SAVE
 
-# vit-s/14
-srun python -u /scratch/eo41/mae/train_mae.py \
-	--model 'mae_vit_small_patch14' \
-	--resume "" \
-	--batch_size_per_gpu 512 \
-	--num_workers 16 \
-	--lr 0.0003 \
-	--min_lr 0.0003 \
-	--weight_decay 0.0 \
-	--output_dir "/vast/eo41/sayavakepicutego4d_models/mae_vits14" \
-	--data_path "/vast/eo41/sayavakepicutego4d/${DATA}.tar" \
-	--save_prefix "${SAVE}_vits14"
-
-# # vit-b/14
+# # vit-s/14
 # srun python -u /scratch/eo41/mae/train_mae.py \
-# 	--model 'mae_vit_base_patch14' \
-# 	--resume "" \
+# 	--model 'mae_vit_small_patch14' \
+# 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vits14/${SAVE}_vits14_checkpoint.pth" \
 # 	--batch_size_per_gpu 512 \
 # 	--num_workers 16 \
 # 	--lr 0.0003 \
 # 	--min_lr 0.0003 \
+# 	--weight_decay 0.0 \
+# 	--output_dir "/vast/eo41/sayavakepicutego4d_models/mae_vits14" \
+# 	--data_path "/vast/eo41/sayavakepicutego4d/${DATA}.tar" \
+# 	--save_prefix "${SAVE}_vits14"
+
+# # vit-b/14
+# srun python -u /scratch/eo41/mae/train_mae.py \
+# 	--model 'mae_vit_base_patch14' \
+# 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vitb14/${SAVE}_vitb14_checkpoint.pth" \
+# 	--batch_size_per_gpu 512 \
+# 	--num_workers 16 \
+# 	--lr 0.0001 \
+# 	--min_lr 0.0001 \
 # 	--weight_decay 0.0 \
 # 	--output_dir "/vast/eo41/sayavakepicutego4d_models/mae_vitb14" \
 # 	--data_path "/vast/eo41/sayavakepicutego4d/${DATA}.tar" \
 # 	--save_prefix "${SAVE}_vitb14"
 
-# # vit-l/14
-# srun python -u /scratch/eo41/mae/train_mae.py \
-# 	--model 'mae_vit_large_patch14' \
-# 	--resume "" \
-# 	--batch_size_per_gpu 512 \
-# 	--num_workers 16 \
-# 	--lr 0.0003 \
-# 	--min_lr 0.0003 \
-# 	--weight_decay 0.0 \
-# 	--output_dir "/vast/eo41/sayavakepicutego4d_models/mae_vitl14" \
-# 	--data_path "/vast/eo41/sayavakepicutego4d/${DATA}.tar" \
-# 	--save_prefix "${SAVE}_vitl14"
+# vit-l/14
+srun python -u /scratch/eo41/mae/train_mae.py \
+	--model 'mae_vit_large_patch14' \
+	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vitl14/${SAVE}_vitl14_checkpoint.pth" \
+	--batch_size_per_gpu 256 \
+	--num_workers 16 \
+	--lr 0.0003 \
+	--min_lr 0.0003 \
+	--weight_decay 0.0 \
+	--output_dir "/vast/eo41/sayavakepicutego4d_models/mae_vitl14" \
+	--data_path "/vast/eo41/sayavakepicutego4d/${DATA}.tar" \
+	--save_prefix "${SAVE}_vitl14"
 
 echo "Done"

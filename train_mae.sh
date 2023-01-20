@@ -15,7 +15,7 @@ export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
 export WORLD_SIZE=1
 
 module purge
-module load cuda/11.3.1
+module load cuda/11.6.2
 
 # srun python -u /scratch/eo41/mae/train_mae.py \
 # 	--model 'mae_vit_small_patch16' \

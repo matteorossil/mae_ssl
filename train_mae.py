@@ -62,9 +62,9 @@ def get_args_parser():
     parser.add_argument('--data_path', default='/scratch/eo41/data/saycam/SAY_5fps_300s_{000000..000009}.tar', type=str, help='dataset path')
     parser.add_argument('--output_dir', default='./output_dir', help='path where to save, empty for no saving')
     parser.add_argument('--log_dir', default='./output_dir', help='path where to tensorboard log')
-    parser.add_argument('--device', default='cuda', help='device to use for training / testing')
-    parser.add_argument('--seed', default=0, type=int)
-    parser.add_argument('--saveckp_freq', default=10000, type=int, help='Save checkpoint every x iterations.')
+    parser.add_argument('--device', default='cuda', help='device to use for training/testing')
+    parser.add_argument('--seed', default=3, type=int)
+    parser.add_argument('--saveckp_freq', default=1000, type=int, help='Save checkpoint every x iterations.')
     parser.add_argument('--start_epoch', default=0, type=int, metavar='N', help='start epoch')
     parser.add_argument('--num_workers', default=10, type=int)
     parser.add_argument('--pin_mem', action='store_true', help='Pin CPU memory in DataLoader for more efficient (sometimes) transfer to GPU.')
@@ -80,7 +80,7 @@ def get_args_parser():
 
 def main(args):
     misc.init_distributed_mode(args)
-    misc.fix_random_seeds(args.seed)
+    # misc.fix_random_seeds(args.seed)
 
     print('job dir: {}'.format(os.path.dirname(os.path.realpath(__file__))))
     print("{}".format(args).replace(', ', ',\n'))
