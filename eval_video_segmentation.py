@@ -29,7 +29,6 @@ import torch
 from torch.nn import functional as F
 from PIL import Image
 
-import utils
 sys.path.insert(0, os.path.abspath('..'))
 import models_vit as vits
 
@@ -196,7 +195,7 @@ def extract_feature(model, frame, return_h_w=False):
     """Extract one frame feature everytime."""
     out = model.get_intermediate_layers(frame.unsqueeze(0).cuda(), n=1)[0]
     out = out[:, 1:, :]  # we discard the [CLS] token
-    h, w = int(frame.shape[1] / model.patch_embed.patch_size), int(frame.shape[2] / model.patch_embed.patch_size)
+    h, w = int(frame.shape[1] / model.patch_embed.patch_size[0]), int(frame.shape[2] / model.patch_embed.patch_size[0])
     dim = out.shape[-1]
     out = out[0].reshape(h, w, dim)
     out = out.reshape(-1, dim)
@@ -303,11 +302,10 @@ if __name__ == '__main__':
     parser.add_argument("--bs", type=int, default=16, help="Batch size, try to reduce if OOM")
     args = parser.parse_args()
 
-    print("git:\n  {}\n".format(utils.get_sha()))
     print("\n".join("%s: %s" % (k, str(v)) for k, v in sorted(dict(vars(args)).items())))
 
     # building network
-    model = vits.__dict__[args.arch](patch_size=args.patch_size, num_classes=0)
+    model = vits.__dict__[args.arch + "_patch" + str(args.patch_size)](num_classes=0, global_pool=False)
     print(f"Model {args.arch} {args.patch_size}x{args.patch_size} built.")
     # load weights to evaluate
     load_pretrained_weights(model, args.pretrained_weights)

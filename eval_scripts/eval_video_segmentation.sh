@@ -5,7 +5,7 @@
 #SBATCH --gres=gpu:a100:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=240GB
-#SBATCH --time=00:59:00
+#SBATCH --time=00:45:00
 #SBATCH --job-name=eval_video_seg
 #SBATCH --output=eval_video_seg_%A_%a.out
 #SBATCH --array=0-11
