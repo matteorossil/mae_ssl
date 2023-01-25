@@ -1,12 +1,14 @@
 #!/bin/bash
 
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
 #SBATCH --gres=gpu:a100:1
-#SBATCH --cpus-per-task=16
-#SBATCH --mem=123GB
-#SBATCH --time=08:00:00
-#SBATCH --job-name=train_coco
-#SBATCH --output=train_coco_%A_%a.out
-#SBATCH --array=1-11
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=240GB
+#SBATCH --time=00:59:00
+#SBATCH --job-name=eval_video_seg
+#SBATCH --output=eval_video_seg_%A_%a.out
+#SBATCH --array=0-11
 
 module purge
 module load cuda/11.6.2
@@ -26,17 +28,11 @@ echo $SUBJECT
 echo $ARCH
 echo $PATCH
 
-python -u train.py \
-	--dataset coco \
-	--data_path '/vast/eo41/data/coco' \
+srun python -u /scratch/eo41/mae/eval_video_segmentation.py \
 	--arch ${ARCH} \
 	--patch_size ${PATCH} \
+	--data_path "/vast/eo41/data/davis-2017/DAVIS/" \
+	--output_dir "/scratch/eo41/mae/evals/davis-2017/${SUBJECT}_${MODEL}" \
 	--pretrained_weights "/scratch/eo41/mae/models_${MODEL}/${SUBJECT}_5fps_${MODEL}_checkpoint.pth" \
-	--save_prefix ${SUBJECT}_${MODEL} \
-	--output_dir "/scratch/eo41/mae/segmentation/evals/coco" \
-	--epochs 10 \
-	--batch_size 32 \
-	--lr 0.0005 \
-	--workers 16
 
 echo "Done"
