@@ -15,13 +15,13 @@ import time
 import argparse
 import datetime
 import json
-import numpy as np
 from pathlib import Path
 
 import torch
+print(torch.__version__)
+
 import torch.backends.cudnn as cudnn
 import torchvision.transforms as transforms
-import torchvision.datasets as datasets
 import webdataset as wds
 
 import timm
@@ -64,7 +64,7 @@ def get_args_parser():
     parser.add_argument('--log_dir', default='./output_dir', help='path where to tensorboard log')
     parser.add_argument('--device', default='cuda', help='device to use for training/testing')
     parser.add_argument('--seed', default=3, type=int)
-    parser.add_argument('--saveckp_freq', default=1000, type=int, help='Save checkpoint every x iterations.')
+    parser.add_argument('--saveckp_freq', default=5000, type=int, help='Save checkpoint every x iterations.')
     parser.add_argument('--start_epoch', default=0, type=int, metavar='N', help='start epoch')
     parser.add_argument('--num_workers', default=10, type=int)
     parser.add_argument('--pin_mem', action='store_true', help='Pin CPU memory in DataLoader for more efficient (sometimes) transfer to GPU.')
@@ -104,7 +104,6 @@ def main(args):
     model = models_mae.__dict__[args.model](norm_pix_loss=args.norm_pix_loss)
     model.to(device)
     model_without_ddp = model
-    print("Model = %s" % str(model_without_ddp))
 
     # effective batch size
     eff_batch_size = args.batch_size_per_gpu * args.accum_iter * misc.get_world_size()
@@ -125,7 +124,6 @@ def main(args):
     # following timm: set wd as 0 for bias and norm layers
     param_groups = optim_factory.add_weight_decay(model_without_ddp, args.weight_decay)
     optimizer = torch.optim.AdamW(param_groups, lr=args.lr, betas=(0.9, 0.95))
-    print(optimizer)
     loss_scaler = NativeScaler()
 
     misc.load_model(args=args, model_without_ddp=model_without_ddp, optimizer=optimizer, loss_scaler=loss_scaler)

@@ -221,14 +221,14 @@ def save_on_master(*args, **kwargs):
 def init_distributed_mode(args):
     # launched with torch.distributed.launch
     if 'RANK' in os.environ and 'WORLD_SIZE' in os.environ:
-        print('Launced with torch.distributed.launch')
+        print('Launched with torch.distributed.launch')
         args.world_size = int(os.environ['WORLD_SIZE'])
         args.rank = int(os.environ['SLURM_PROCID'])
         args.gpu = args.rank % torch.cuda.device_count()
         print('world size, rank, gpu, device count:', args.world_size, args.rank, args.gpu, torch.cuda.device_count())
     # launched with submitit on a slurm cluster
     elif 'SLURM_PROCID' in os.environ:
-        print('Launced with slurm')
+        print('Launched with slurm')
         args.world_size = int(os.environ['WORLD_SIZE'])
         args.rank = int(os.environ['SLURM_PROCID'])
         args.gpu = args.rank % torch.cuda.device_count()

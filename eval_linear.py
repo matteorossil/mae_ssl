@@ -188,6 +188,7 @@ def main(args):
     optimizer = torch.optim.Adam(model_without_ddp.head.parameters(), args.lr)
     criterion = torch.nn.CrossEntropyLoss()
 
+    # load if resuming from a checkpoint; I need to update the above resume probably
     misc.load_model(args=args, model_without_ddp=model_without_ddp, optimizer=optimizer, loss_scaler=loss_scaler)
 
     if args.eval:
