@@ -12,32 +12,23 @@
 import argparse
 import datetime
 import json
-import numpy as np
 import os
 import time
 from pathlib import Path
-
+import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
-
 import timm
 assert timm.__version__ == "0.3.2" # version check
 from timm.models.layers import trunc_normal_
-
 import util.misc as misc
 from util.pos_embed import interpolate_pos_embed
 from util.misc import NativeScalerWithGradNormCount as NativeScaler
 from torchvision import transforms as pth_transforms
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
-
 import models_vit
-
 from engine_finetune import train_one_epoch, evaluate
-
-
-def identity(x):
-    return x
 
 def get_args_parser():
     parser = argparse.ArgumentParser('MAE finetuning', add_help=False)
@@ -70,7 +61,6 @@ def get_args_parser():
 
     return parser
 
-
 def main(args):
 
     print('job dir: {}'.format(os.path.dirname(os.path.realpath(__file__))))
@@ -96,7 +86,7 @@ def main(args):
     ])
 
     val_dataset = ImageFolder(args.val_data_path, transform=val_transform)
-    val_loader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers, pin_memory=True)
+    val_loader = DataLoader(val_dataset, batch_size=8*args.batch_size, shuffle=False, num_workers=args.num_workers, pin_memory=True)  # note we use a larger batch size for val
 
     train_dataset = ImageFolder(args.train_data_path, transform=train_transform)
     # few-shot finetuning
@@ -116,6 +106,7 @@ def main(args):
 
     print(f"{len(train_loader)} train and {len(val_loader)} val iterations per epoch.")
     # ============ done data ... ============
+
     # set up and load model
     model = models_vit.__dict__[args.model](num_classes=args.num_labels, global_pool=args.global_pool)
 
@@ -163,7 +154,7 @@ def main(args):
 
     # set optimizer + loss
     loss_scaler = NativeScaler()
-    optimizer = torch.optim.Adam(model_without_ddp.head.parameters(), args.lr)
+    optimizer = torch.optim.Adam(model_without_ddp.parameters(), args.lr)
     criterion = torch.nn.CrossEntropyLoss()
 
     # load if resuming from a checkpoint; I need to update the above resume probably
