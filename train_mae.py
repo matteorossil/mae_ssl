@@ -38,7 +38,7 @@ GLOBAL_ITER = 0
 
 def get_args_parser():
     parser = argparse.ArgumentParser('MAE pre-training', add_help=False)
-    parser.add_argument('--batch_size_per_gpu', default=64, type=int, help='Batch size per GPU (effective batch size is batch_size_per_gpu * accum_iter * # gpus')
+    parser.add_argument('--batch_size_per_gpu', default=256, type=int, help='Batch size per GPU (effective batch size is batch_size_per_gpu * accum_iter * # gpus')
     parser.add_argument('--epochs', default=999, type=int)
     parser.add_argument('--accum_iter', default=1, type=int, help='Accumulate gradient iterations (for increasing the effective batch size under memory constraints)')
     parser.add_argument("--save_prefix", default="", type=str, help="""prefix for saving checkpoint and log files""")
@@ -64,9 +64,9 @@ def get_args_parser():
     parser.add_argument('--log_dir', default='./output_dir', help='path where to tensorboard log')
     parser.add_argument('--device', default='cuda', help='device to use for training/testing')
     parser.add_argument('--seed', default=3, type=int)
-    parser.add_argument('--saveckp_freq', default=5000, type=int, help='Save checkpoint every x iterations.')
+    parser.add_argument('--saveckp_freq', default=1000, type=int, help='Save checkpoint every x iterations.')
     parser.add_argument('--start_epoch', default=0, type=int, metavar='N', help='start epoch')
-    parser.add_argument('--num_workers', default=10, type=int)
+    parser.add_argument('--num_workers', default=16, type=int)
     parser.add_argument('--pin_mem', action='store_true', help='Pin CPU memory in DataLoader for more efficient (sometimes) transfer to GPU.')
     parser.add_argument('--no_pin_mem', action='store_false', dest='pin_mem')
     parser.set_defaults(pin_mem=True)
@@ -121,6 +121,10 @@ def main(args):
     model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu], find_unused_parameters=True)
     model_without_ddp = model.module
     
+    n_parameters = sum(p.numel() for p in model_without_ddp.parameters() if p.requires_grad)
+    print("Model = %s" % str(model_without_ddp))
+    print('number of params (M): %.2f' % (n_parameters / 1.e6))
+
     # following timm: set wd as 0 for bias and norm layers
     param_groups = optim_factory.add_weight_decay(model_without_ddp, args.weight_decay)
     optimizer = torch.optim.AdamW(param_groups, lr=args.lr, betas=(0.9, 0.95))

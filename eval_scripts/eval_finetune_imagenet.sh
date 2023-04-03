@@ -3,7 +3,7 @@
 #SBATCH --gres=gpu:a100:1
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=240GB
-#SBATCH --time=6:00:00
+#SBATCH --time=16:00:00
 #SBATCH --job-name=mae_finetune_imagenet
 #SBATCH --output=mae_finetune_imagenet_%A_%a.out
 #SBATCH --array=0-12
@@ -32,7 +32,7 @@ python -u /scratch/eo41/mae/eval_finetune.py \
 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vitl14/${SUBJECT}_vitl14_checkpoint.pth" \
 	--save_prefix ${SUBJECT}_mae_vitl14 \
 	--batch_size 128 \
-	--epochs 10 \
+	--epochs 50 \
 	--num_workers 16 \
 	--lr 0.0001 \
 	--output_dir "/vast/eo41/sayavakepicutego4d_evals" \
@@ -47,7 +47,7 @@ python -u /scratch/eo41/mae/eval_finetune.py \
 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vitb14/${SUBJECT}_vitb14_checkpoint.pth" \
 	--save_prefix ${SUBJECT}_mae_vitb14 \
 	--batch_size 128 \
-	--epochs 10 \
+	--epochs 50 \
 	--num_workers 16 \
 	--lr 0.0001 \
 	--output_dir "/vast/eo41/sayavakepicutego4d_evals" \
@@ -62,7 +62,7 @@ python -u /scratch/eo41/mae/eval_finetune.py \
 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vits14/${SUBJECT}_vits14_checkpoint.pth" \
 	--save_prefix ${SUBJECT}_mae_vits14 \
 	--batch_size 128 \
-	--epochs 10 \
+	--epochs 50 \
 	--num_workers 16 \
 	--lr 0.0001 \
 	--output_dir "/vast/eo41/sayavakepicutego4d_evals" \
