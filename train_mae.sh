@@ -14,9 +14,6 @@ export MASTER_ADDR=$(hostname -s)
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
 export WORLD_SIZE=1
 
-module purge
-module load cuda/11.6.2
-
 # srun python -u /scratch/eo41/mae/train_mae.py \
 # 	--model 'mae_vit_small_patch16' \
 # 	--resume "/scratch/eo41/mae/models_vits16/say_5fps_vits16_checkpoint.pth" \

@@ -8,9 +8,6 @@
 #SBATCH --output=mae_lin_imagenet_%A_%a.out
 #SBATCH --array=0-11
 
-module purge
-module load cuda/11.3.1
-
 MODELS=(vitl16 vitl16 vitl16 vitl16 vitb16 vitb16 vitb16 vitb16 vits16 vits16 vits16 vits16)
 SUBJECTS=(say s a y say s a y say s a y say s a y)
 ARCHS=(vit_large_patch16 vit_large_patch16 vit_large_patch16 vit_large_patch16 vit_base_patch16 vit_base_patch16 vit_base_patch16 vit_base_patch16 vit_small_patch16 vit_small_patch16 vit_small_patch16 vit_small_patch16)
