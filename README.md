@@ -50,4 +50,4 @@ python -u eval_finetune.py \
 	--frac_retained 0.010147 \
 	--num_labels 1000
 ```
-Here `frac_retained` is the fraction of the training set used for finetuning and can be set to do few-shot finetuning evals (*e.g.* `	--frac_retained 0.01` corresponds to finetuning with 1% of the training data, *i.e.* 12-13 examples per class in the case of ImageNet).
+Here `frac_retained` is the fraction of the training set used for finetuning and can be set to do few-shot finetuning evals (*e.g.* `--frac_retained 0.01` corresponds to finetuning with 1% of the training data, *i.e.* 12-13 examples per class in the case of ImageNet).
