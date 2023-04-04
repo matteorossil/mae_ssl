@@ -4,7 +4,7 @@ This is my personal copy of Facebook's [Masked Autoencoders (MAE)](https://githu
 
 ### Usage examples
 
-* To train an MAE model with a ViT-S/16 architecture on your data: 
+* **Training:** To train an MAE model with a ViT-S/16 architecture on your data: 
 ```python
 python -u train_mae.py \
 	--model 'mae_vit_small_patch16' \
@@ -15,10 +15,10 @@ python -u train_mae.py \
 	--weight_decay 0.0 \
     --output_dir OUTPUT_DIR \
     --save_prefix INFORMATIVE_SAVE_PREFIX \
-	--data_path DATA_PATH
+    --data_path DATA_PATH
 ```
 
-* To evaluate an MAE model with the linear probing approach: 
+* **Linear evaluation:** To evaluate an MAE model with the linear probing approach: 
 ```python
 python -u eval_linear.py \
 	--model 'vit_small_patch16' \
@@ -34,7 +34,7 @@ python -u eval_linear.py \
 	--num_labels 1000
 ```
 
-* To evaluate an MAE model with the finetuning approach: 
+* **Finetuning evaluation:** To evaluate an MAE model with the finetuning approach: 
 ```python
 python -u eval_finetune.py \
 	--model 'vit_small_patch16' \
