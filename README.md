@@ -4,17 +4,17 @@ This is my personal copy of Facebook's [Masked Autoencoders (MAE)](https://githu
 
 ### Usage examples
 
-* **Training:** To train an MAE model with a ViT-S/16 architecture on your data: 
+* **Training:** To train an MAE model with a ViT-S/16 architecture from scratch on your data: 
 ```python
 python -u train_mae.py \
-    --output_dir OUTPUT_DIR \
-    --save_prefix INFORMATIVE_SAVE_PREFIX \
-    --data_path DATA_PATH \
 	--model 'mae_vit_small_patch16' \
 	--batch_size_per_gpu 512 \
 	--num_workers 16 \
 	--lr 0.0003 \
-	--min_lr 0.0003
+	--min_lr 0.0003 \
+	--output_dir OUTPUT_DIR \
+	--data_path DATA_PATH \
+	--save_prefix INFORMATIVE_SAVE_PREFIX
 ```
 
 * **Linear evaluation:** To evaluate an MAE model with the linear probing approach: 
