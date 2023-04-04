@@ -12,7 +12,6 @@ python -u train_mae.py \
 	--num_workers 16 \
 	--lr 0.0003 \
 	--min_lr 0.0003 \
-	--weight_decay 0.0 \
     --output_dir OUTPUT_DIR \
     --save_prefix INFORMATIVE_SAVE_PREFIX \
     --data_path DATA_PATH
