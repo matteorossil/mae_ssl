@@ -33,7 +33,7 @@ import models_mae
 from typing import Iterable
 import util.misc as misc
 from util.misc import NativeScalerWithGradNormCount as NativeScaler
-    
+
 GLOBAL_ITER = 0
 
 def get_args_parser():
