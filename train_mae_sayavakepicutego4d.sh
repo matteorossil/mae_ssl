@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=2
-#SBATCH --gres=gpu:a100:2
+#SBATCH --ntasks-per-node=4
+#SBATCH --gres=gpu:a100:4
 #SBATCH --cpus-per-task=16
-#SBATCH --mem=300GB
+#SBATCH --mem=492GB
 #SBATCH --time=48:00:00
 #SBATCH --job-name=train_mae_sayavakepicutego4d
 #SBATCH --output=train_mae_sayavakepicutego4d_%A_%a.out
@@ -12,7 +12,7 @@
 
 export MASTER_ADDR=$(hostname -s)
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
-export WORLD_SIZE=2
+export WORLD_SIZE=4
 
 DATAS=(
 	"sayavakepicutego4d_{000000..000017}" 
@@ -91,31 +91,32 @@ echo $SAVE
 # 	--data_path "/vast/eo41/sayavakepicutego4d/${DATA}.tar" \
 # 	--save_prefix "${SAVE}_vitl14"
 
-# vit-h/14
-srun python -u /scratch/eo41/mae/train_mae.py \
-	--model 'mae_vit_huge_patch14' \
-	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14/${SAVE}_vith14_checkpoint.pth" \
-	--batch_size_per_gpu 256 \
-	--num_workers 16 \
-	--lr 0.0001 \
-	--min_lr 0.0001 \
-	--weight_decay 0.0 \
-	--output_dir "/vast/eo41/sayavakepicutego4d_models/mae_vith14" \
-	--data_path "/vast/eo41/sayavakepicutego4d/${DATA}.tar" \
-	--save_prefix "${SAVE}_vith14"
-
-# # vit-h/14 @ 448px
+# # vit-h/14
 # srun python -u /scratch/eo41/mae/train_mae.py \
 # 	--model 'mae_vit_huge_patch14' \
-# 	--resume "" \
-# 	--input_size 448 \
+# 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14/${SAVE}_vith14_checkpoint.pth" \
 # 	--batch_size_per_gpu 256 \
 # 	--num_workers 16 \
 # 	--lr 0.0001 \
 # 	--min_lr 0.0001 \
 # 	--weight_decay 0.0 \
-# 	--output_dir "/vast/eo41/sayavakepicutego4d_models/mae_vith14_448" \
+# 	--output_dir "/vast/eo41/sayavakepicutego4d_models/mae_vith14" \
 # 	--data_path "/vast/eo41/sayavakepicutego4d/${DATA}.tar" \
-# 	--save_prefix "${SAVE}_vith14_448"
+# 	--save_prefix "${SAVE}_vith14"
+
+# vit-h/14 @ 448px
+srun python -u /scratch/eo41/mae/train_mae.py \
+	--model 'mae_vit_huge_patch14_448' \
+	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14_448/${SAVE}_vith14_448_checkpoint.pth" \
+	--input_size 448 \
+	--mask_ratio 0.8 \
+	--batch_size_per_gpu 42 \
+	--num_workers 16 \
+	--lr 0.0001 \
+	--min_lr 0.0001 \
+	--weight_decay 0.0 \
+	--output_dir "/vast/eo41/sayavakepicutego4d_models/mae_vith14_448" \
+	--data_path "/vast/eo41/sayavakepicutego4d/${DATA}.tar" \
+	--save_prefix "${SAVE}_vith14_448"
 
 echo "Done"

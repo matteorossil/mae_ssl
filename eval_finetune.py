@@ -36,7 +36,7 @@ def get_args_parser():
     parser.add_argument('--epochs', default=100, type=int)
 
     # Model parameters
-    parser.add_argument('--model', default='vit_large_patch16', type=str, choices=['vit_large_patch14', 'vit_base_patch14', 'vit_small_patch14'], help='Name of model to train')
+    parser.add_argument('--model', default='', type=str, choices=['vit_huge_patch14_448', 'vit_huge_patch14', 'vit_large_patch14', 'vit_base_patch14', 'vit_small_patch14'], help='Name of model')
     parser.add_argument('--resume', default='', help='resume from checkpoint')
     parser.add_argument('--global_pool', action='store_true')
     parser.set_defaults(global_pool=False)
@@ -46,6 +46,7 @@ def get_args_parser():
     parser.add_argument('--lr', type=float, default=0.0005, metavar='LR', help='learning rate (absolute lr)')
 
     # Dataset parameters
+    parser.add_argument('--input_size', default=224, type=int, help='images input size')
     parser.add_argument('--num_labels', default=1000, type=int, help='number of classes')
     parser.add_argument('--output_dir', default='./output_dir', help='path where to save, empty for no saving')
     parser.add_argument('--device', default='cuda', help='device to use for training / testing')
@@ -71,15 +72,15 @@ def main(args):
     # ============ preparing data ... ============
     # validation transforms
     val_transform = pth_transforms.Compose([
-        pth_transforms.Resize(256, interpolation=3),
-        pth_transforms.CenterCrop(224),
+        pth_transforms.Resize(args.input_size + 32, interpolation=3),
+        pth_transforms.CenterCrop(args.input_size),
         pth_transforms.ToTensor(),
         pth_transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
     ])
 
     # training transforms
     train_transform = pth_transforms.Compose([
-        pth_transforms.RandomResizedCrop(224),
+        pth_transforms.RandomResizedCrop(args.input_size),
         pth_transforms.RandomHorizontalFlip(),
         pth_transforms.ToTensor(),
         pth_transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
