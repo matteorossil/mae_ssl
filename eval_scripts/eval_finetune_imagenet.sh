@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#SBATCH --gres=gpu:a100:1
+#SBATCH --gres=gpu:a100:4
 #SBATCH --cpus-per-task=16
-#SBATCH --mem=240GB
-#SBATCH --time=8:00:00
+#SBATCH --mem=492GB
+#SBATCH --time=4:00:00
 #SBATCH --job-name=mae_finetune_imagenet
 #SBATCH --output=mae_finetune_imagenet_%A_%a.out
 #SBATCH --array=0
@@ -32,7 +32,7 @@ python -u /scratch/eo41/mae/eval_finetune.py \
 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14_448/${SUBJECT}_vith14_448_checkpoint.pth" \
 	--save_prefix ${SUBJECT}_mae_vith14_448 \
 	--input_size 448 \
-	--batch_size 120 \
+	--batch_size 56 \
 	--epochs 50 \
 	--num_workers 16 \
 	--lr 0.0001 \

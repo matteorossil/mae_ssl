@@ -145,10 +145,11 @@ def main(args):
     for _, p in model.head.named_parameters():
         p.requires_grad = True
 
+    model = torch.nn.DataParallel(model)
     model.to(device)
 
-    model_without_ddp = model
-    n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    model_without_ddp = model.module
+    n_parameters = sum(p.numel() for p in model_without_ddp.parameters() if p.requires_grad)
 
     print("Model = %s" % str(model_without_ddp))
     print('number of params (M): %.2f' % (n_parameters / 1.e6))
@@ -160,7 +161,7 @@ def main(args):
 
     # load if resuming from a checkpoint; I need to update the above resume probably
     misc.load_model(args=args, model_without_ddp=model_without_ddp, optimizer=optimizer, loss_scaler=loss_scaler)
-
+    
     if args.eval:
         test_stats = evaluate(val_loader, model, device, args)
         print(f"Accuracy of the network on the test images: {test_stats['acc1']:.1f}%")
