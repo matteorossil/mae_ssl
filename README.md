@@ -16,6 +16,7 @@ python -u train_mae.py \
 	--data_path DATA_PATH \
 	--save_prefix INFORMATIVE_SAVE_PREFIX
 ```
+This version uses the [`webdataset`](https://github.com/webdataset/webdataset) interface to feed the data into the model. There's a separete training file that uses the standard `torch`-`torchvision` data loading interface instead, if you'd prefer to use that: [`train_mae_nowds.py`](https://github.com/eminorhan/mae/blob/master/train_mae_nowds.py).
 
 * **Linear evaluation:** To evaluate an MAE model with the linear probing approach, use [`eval_linear.py`](https://github.com/eminorhan/mae/blob/master/eval_linear.py): 
 ```python

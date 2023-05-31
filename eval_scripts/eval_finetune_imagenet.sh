@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#SBATCH --gres=gpu:a100:4
+#SBATCH --gres=gpu:a100:1
 #SBATCH --cpus-per-task=16
-#SBATCH --mem=492GB
-#SBATCH --time=4:00:00
+#SBATCH --mem=240GB
+#SBATCH --time=16:00:00
 #SBATCH --job-name=mae_finetune_imagenet
 #SBATCH --output=mae_finetune_imagenet_%A_%a.out
 #SBATCH --array=0
@@ -26,21 +26,37 @@ SUBJECTS=(
 SUBJECT=${SUBJECTS[$SLURM_ARRAY_TASK_ID]}
 echo $SUBJECT
 
-# vith14 @ 448px
+# vith14 @ 504px
 python -u /scratch/eo41/mae/eval_finetune.py \
-	--model vit_huge_patch14_448 \
-	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14_448/${SUBJECT}_vith14_448_checkpoint.pth" \
-	--save_prefix ${SUBJECT}_mae_vith14_448 \
-	--input_size 448 \
-	--batch_size 56 \
+	--model vit_huge_patch14_504 \
+	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14_504/${SUBJECT}_vith14_504_checkpoint.pth" \
+	--save_prefix ${SUBJECT}_mae_vith14_504 \
+	--input_size 504 \
+	--batch_size 9 \
 	--epochs 50 \
 	--num_workers 16 \
-	--lr 0.0001 \
+	--lr 0.00005 \
 	--output_dir "/vast/eo41/sayavakepicutego4d_evals" \
 	--train_data_path "/scratch/work/public/imagenet/train" \
 	--val_data_path "/scratch/eo41/imagenet/val" \
 	--frac_retained 0.02 \
 	--num_labels 1000
+
+# # vith14 @ 448px
+# python -u /scratch/eo41/mae/eval_finetune.py \
+# 	--model vit_huge_patch14_448 \
+# 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14_448/${SUBJECT}_vith14_448_checkpoint.pth" \
+# 	--save_prefix ${SUBJECT}_mae_vith14_448 \
+# 	--input_size 448 \
+# 	--batch_size 14 \
+# 	--epochs 50 \
+# 	--num_workers 16 \
+# 	--lr 0.00005 \
+# 	--output_dir "/vast/eo41/sayavakepicutego4d_evals" \
+# 	--train_data_path "/scratch/work/public/imagenet/train" \
+# 	--val_data_path "/scratch/eo41/imagenet/val" \
+# 	--frac_retained 0.02 \
+# 	--num_labels 1000
 
 # # vith14
 # python -u /scratch/eo41/mae/eval_finetune.py \

@@ -36,7 +36,7 @@ def get_args_parser():
     parser.add_argument('--epochs', default=100, type=int)
 
     # Model parameters
-    parser.add_argument('--model', default='', type=str, choices=['vit_huge_patch14_448', 'vit_huge_patch14', 'vit_large_patch14', 'vit_base_patch14', 'vit_small_patch14'], help='Name of model')
+    parser.add_argument('--model', default='', type=str, choices=['vit_huge_patch14_504', 'vit_huge_patch14_448', 'vit_huge_patch14', 'vit_large_patch14', 'vit_base_patch14', 'vit_small_patch14'], help='Name of model')
     parser.add_argument('--resume', default='', help='resume from checkpoint')
     parser.add_argument('--global_pool', action='store_true')
     parser.set_defaults(global_pool=False)
@@ -63,7 +63,6 @@ def get_args_parser():
     return parser
 
 def main(args):
-
     print('job dir: {}'.format(os.path.dirname(os.path.realpath(__file__))))
     print("{}".format(args).replace(', ', ',\n'))
     device = torch.device(args.device)
@@ -145,23 +144,23 @@ def main(args):
     for _, p in model.head.named_parameters():
         p.requires_grad = True
 
-    model = torch.nn.DataParallel(model)
+    # model = torch.nn.DataParallel(model)
+    # model_without_ddp = model.module
+    model_without_ddp = model
     model.to(device)
-
-    model_without_ddp = model.module
-    n_parameters = sum(p.numel() for p in model_without_ddp.parameters() if p.requires_grad)
+    n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
 
     print("Model = %s" % str(model_without_ddp))
     print('number of params (M): %.2f' % (n_parameters / 1.e6))
 
     # set optimizer + loss
     loss_scaler = NativeScaler()
-    optimizer = torch.optim.Adam(model_without_ddp.parameters(), args.lr)
+    optimizer = torch.optim.Adam(model.parameters(), args.lr)
     criterion = torch.nn.CrossEntropyLoss()
 
     # load if resuming from a checkpoint; I need to update the above resume probably
     misc.load_model(args=args, model_without_ddp=model_without_ddp, optimizer=optimizer, loss_scaler=loss_scaler)
-    
+
     if args.eval:
         test_stats = evaluate(val_loader, model, device, args)
         print(f"Accuracy of the network on the test images: {test_stats['acc1']:.1f}%")
