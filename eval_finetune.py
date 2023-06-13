@@ -36,7 +36,7 @@ def get_args_parser():
     parser.add_argument('--epochs', default=100, type=int)
 
     # Model parameters
-    parser.add_argument('--model', default='', type=str, choices=['vit_huge_patch14_504', 'vit_huge_patch14_448', 'vit_huge_patch14', 'vit_large_patch14', 'vit_base_patch14', 'vit_small_patch14'], help='Name of model')
+    parser.add_argument('--model', default='', type=str, choices=['vit_huge_patch14_490', 'vit_huge_patch14_448', 'vit_huge_patch14', 'vit_large_patch14', 'vit_base_patch14', 'vit_small_patch14'], help='Name of model')
     parser.add_argument('--resume', default='', help='resume from checkpoint')
     parser.add_argument('--global_pool', action='store_true')
     parser.set_defaults(global_pool=False)

@@ -8,7 +8,7 @@
 #SBATCH --time=48:00:00
 #SBATCH --job-name=train_mae_sayavakepicutego4d
 #SBATCH --output=train_mae_sayavakepicutego4d_%A_%a.out
-#SBATCH --array=1
+#SBATCH --array=0
 
 export MASTER_ADDR=$(hostname -s)
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
@@ -119,34 +119,19 @@ echo $SAVE
 # 	--data_path "/vast/eo41/sayavakepicutego4d/${DATA}.tar" \
 # 	--save_prefix "${SAVE}_vith14_448"
 
-# vit-h/14 @ 504px
+# vit-h/14 @ 476 px
 srun python -u /scratch/eo41/mae/train_mae.py \
-	--model 'mae_vit_huge_patch14_504' \
- 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14_504/${SAVE}_vith14_504_checkpoint.pth" \
-	--input_size 504 \
-	--mask_ratio 0.85 \
-	--batch_size_per_gpu 30 \
+	--model 'mae_vit_huge_patch14_476' \
+ 	--resume '' \
+	--input_size 476 \
+	--mask_ratio 0.8 \
+	--batch_size_per_gpu 34 \
 	--num_workers 16 \
-	--lr 0.00005 \
-	--min_lr 0.00005 \
+	--lr 0.0001 \
+	--min_lr 0.0001 \
 	--weight_decay 0.0 \
-	--output_dir "/vast/eo41/sayavakepicutego4d_models/mae_vith14_504" \
+	--output_dir "/vast/eo41/sayavakepicutego4d_models/mae_vith14_476" \
 	--data_path "/vast/eo41/sayavakepicutego4d/${DATA}.tar" \
-	--save_prefix "${SAVE}_vith14_504"
-
-# # vit-h/14 @ 518px
-# srun python -u /scratch/eo41/mae/train_mae.py \
-# 	--model 'mae_vit_huge_patch14_518' \
-#  	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14_518/${SAVE}_vith14_518_checkpoint.pth" \
-# 	--input_size 518 \
-# 	--mask_ratio 0.8 \
-# 	--batch_size_per_gpu 16 \
-# 	--num_workers 16 \
-# 	--lr 0.00005 \
-# 	--min_lr 0.00005 \
-# 	--weight_decay 0.0 \
-# 	--output_dir "/vast/eo41/sayavakepicutego4d_models/mae_vith14_518" \
-# 	--data_path "/vast/eo41/sayavakepicutego4d/${DATA}.tar" \
-# 	--save_prefix "${SAVE}_vith14_518"
+	--save_prefix "${SAVE}_vith14_476"
 
 echo "Done"
