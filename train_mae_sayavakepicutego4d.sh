@@ -122,7 +122,7 @@ echo $SAVE
 # vit-h/14 @ 476 px
 srun python -u /scratch/eo41/mae/train_mae.py \
 	--model 'mae_vit_huge_patch14_476' \
- 	--resume '' \
+ 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14_476/${SAVE}_vith14_476_checkpoint.pth" \
 	--input_size 476 \
 	--mask_ratio 0.8 \
 	--batch_size_per_gpu 34 \

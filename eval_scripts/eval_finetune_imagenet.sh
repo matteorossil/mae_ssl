@@ -26,21 +26,22 @@ SUBJECTS=(
 SUBJECT=${SUBJECTS[$SLURM_ARRAY_TASK_ID]}
 echo $SUBJECT
 
-# vith14 @ 490px
+# vith14 @ 476px
 python -u /scratch/eo41/mae/eval_finetune.py \
-	--model vit_huge_patch14_490 \
-	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14_x/${SUBJECT}_vith14_x_checkpoint.pth" \
-	--save_prefix ${SUBJECT}_mae_vith14_490 \
-	--input_size 490 \
-	--batch_size 10 \
+	--model vit_huge_patch14_476 \
+	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14_476/${SUBJECT}_vith14_476_checkpoint.pth" \
+	--save_prefix ${SUBJECT}_mae_vith14_476 \
+	--input_size 476 \
+	--batch_size 11 \
 	--epochs 50 \
 	--num_workers 16 \
-	--lr 0.00004 \
+	--lr 0.00005 \
 	--output_dir "/vast/eo41/sayavakepicutego4d_evals" \
 	--train_data_path "/scratch/work/public/imagenet/train" \
 	--val_data_path "/scratch/eo41/imagenet/val" \
 	--frac_retained 0.02 \
-	--num_labels 1000
+	--num_labels 1000 \
+	--no_optim_resume
 
 # # vith14 @ 448px
 # python -u /scratch/eo41/mae/eval_finetune.py \
@@ -56,7 +57,8 @@ python -u /scratch/eo41/mae/eval_finetune.py \
 # 	--train_data_path "/scratch/work/public/imagenet/train" \
 # 	--val_data_path "/scratch/eo41/imagenet/val" \
 # 	--frac_retained 0.02 \
-# 	--num_labels 1000
+# 	--num_labels 1000 \
+# 	--no_optim_resume
 
 # # vith14
 # python -u /scratch/eo41/mae/eval_finetune.py \
@@ -71,7 +73,8 @@ python -u /scratch/eo41/mae/eval_finetune.py \
 # 	--train_data_path "/scratch/work/public/imagenet/train" \
 # 	--val_data_path "/scratch/eo41/imagenet/val" \
 # 	--frac_retained 0.02 \
-# 	--num_labels 1000
+# 	--num_labels 1000 \
+# 	--no_optim_resume
 
 # # vitl14
 # python -u /scratch/eo41/mae/eval_finetune.py \
@@ -86,7 +89,8 @@ python -u /scratch/eo41/mae/eval_finetune.py \
 # 	--train_data_path "/scratch/work/public/imagenet/train" \
 # 	--val_data_path "/scratch/eo41/imagenet/val" \
 # 	--frac_retained 0.010147 \
-# 	--num_labels 1000
+# 	--num_labels 1000 \
+# 	--no_optim_resume
 
 # # vitb14
 # python -u /scratch/eo41/mae/eval_finetune.py \
@@ -101,7 +105,8 @@ python -u /scratch/eo41/mae/eval_finetune.py \
 # 	--train_data_path "/scratch/work/public/imagenet/train" \
 # 	--val_data_path "/scratch/eo41/imagenet/val" \
 # 	--frac_retained 0.010147 \
-# 	--num_labels 1000
+# 	--num_labels 1000 \
+# 	--no_optim_resume
 
 # # vits14
 # python -u /scratch/eo41/mae/eval_finetune.py \
@@ -116,6 +121,7 @@ python -u /scratch/eo41/mae/eval_finetune.py \
 # 	--train_data_path "/scratch/work/public/imagenet/train" \
 # 	--val_data_path "/scratch/eo41/imagenet/val" \
 # 	--frac_retained 0.010147 \
-# 	--num_labels 1000
+# 	--num_labels 1000 \
+# 	--no_optim_resume
 
 echo "Done"
