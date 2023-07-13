@@ -165,14 +165,7 @@ def named_apply(fn: Callable, module: nn.Module, name='', depth_first=True, incl
         fn(module=module, name=name)
     return module
 
-def checkpoint_seq(
-        functions,
-        x,
-        every=1,
-        flatten=False,
-        skip_last=False,
-        preserve_rng_state=True
-):
+def checkpoint_seq(functions, x, every=1, flatten=False, skip_last=False, preserve_rng_state=True):
     r"""A helper function for checkpointing sequential models.
     Sequential models execute a list of modules/functions in order
     (sequentially). Therefore, we can divide such a sequence into segments

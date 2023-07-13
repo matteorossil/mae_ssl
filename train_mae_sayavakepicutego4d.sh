@@ -4,11 +4,11 @@
 #SBATCH --ntasks-per-node=4
 #SBATCH --gres=gpu:a100:4
 #SBATCH --cpus-per-task=16
-#SBATCH --mem=492GB
+#SBATCH --mem=480GB
 #SBATCH --time=48:00:00
 #SBATCH --job-name=train_mae_sayavakepicutego4d
 #SBATCH --output=train_mae_sayavakepicutego4d_%A_%a.out
-#SBATCH --array=0
+#SBATCH --array=0-12
 
 export MASTER_ADDR=$(hostname -s)
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
@@ -122,7 +122,7 @@ echo $SAVE
 # vit-h/14 @ 476 px
 srun python -u /scratch/eo41/mae/train_mae.py \
 	--model 'mae_vit_huge_patch14_476' \
- 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14_476/${SAVE}_vith14_476_checkpoint.pth" \
+ 	--resume "" \
 	--input_size 476 \
 	--mask_ratio 0.8 \
 	--batch_size_per_gpu 34 \

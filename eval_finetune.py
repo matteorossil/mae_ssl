@@ -175,12 +175,13 @@ def main(args):
 
         train_stats = train_one_epoch(model, criterion, train_loader, optimizer, device, epoch, loss_scaler, max_norm=None)
 
-        # if args.output_dir:
-        #     misc.save_model(args=args, model=model, model_without_ddp=model_without_ddp, optimizer=optimizer, loss_scaler=loss_scaler, epoch=epoch)
-
         test_stats = evaluate(val_loader, model, device, args.output_dir)
         print(f"Top-1 accuracy of the network on the test images: {test_stats['acc1']:.1f}%")
         print(f"Top-5 accuracy of the network on the test images: {test_stats['acc5']:.1f}%")
+
+        if args.output_dir and test_stats["acc1"] > max_accuracy_1:
+            print('Improvement in max test accuracy. Saving model!')
+            misc.save_model(args=args, model=model, model_without_ddp=model_without_ddp, optimizer=optimizer, loss_scaler=loss_scaler, epoch=epoch)
 
         max_accuracy_1 = max(max_accuracy_1, test_stats["acc1"])
         max_accuracy_5 = max(max_accuracy_5, test_stats["acc5"])
