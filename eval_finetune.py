@@ -102,7 +102,7 @@ def main(args):
         print(f"Data loaded with {len(train_idx)} train and {len(val_dataset)} val imgs.")
     else:
         print('Using all of train data')
-        train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers, pin_memory=True, sampler=None)    
+        train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers, pin_memory=True, drop_last=True, sampler=None)    
         print(f"Data loaded with {len(train_dataset)} train and {len(val_dataset)} val imgs.")
 
     print(f"{len(train_loader)} train and {len(val_loader)} val iterations per epoch.")
@@ -156,11 +156,11 @@ def main(args):
 
     # set optimizer + loss
     loss_scaler = NativeScaler()
-    optimizer = torch.optim.Adam(model.parameters(), args.lr)
+    optimizer = torch.optim.AdamW(model.parameters(), args.lr, weight_decay=0.05)
     criterion = torch.nn.CrossEntropyLoss()
 
-    # load if resuming from a checkpoint; I need to update the above resume probably
-    misc.load_model(args=args, model_without_ddp=model_without_ddp, optimizer=optimizer, loss_scaler=loss_scaler)
+    # # load if resuming from a checkpoint; I need to update the above resume probably
+    # misc.load_model(args=args, model_without_ddp=model_without_ddp, optimizer=optimizer, loss_scaler=loss_scaler)
 
     if args.eval:
         test_stats = evaluate(val_loader, model, device, args)

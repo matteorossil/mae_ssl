@@ -6,7 +6,7 @@
 #SBATCH --time=15:00:00
 #SBATCH --job-name=mae_finetune_imagenet_5
 #SBATCH --output=mae_finetune_imagenet_5_%A_%a.out
-#SBATCH --array=0
+#SBATCH --array=0-12
 
 SUBJECTS=(
 	"sayavakepicutego4d" 
