@@ -4,8 +4,8 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=240GB
 #SBATCH --time=15:00:00
-#SBATCH --job-name=mae_finetune_imagenet_4
-#SBATCH --output=mae_finetune_imagenet_4_%A_%a.out
+#SBATCH --job-name=mae_finetune_imagenet_b
+#SBATCH --output=mae_finetune_imagenet_b_%A_%a.out
 #SBATCH --array=0-12
 
 SUBJECTS=(
@@ -60,21 +60,21 @@ echo $SUBJECT
 # 	--num_labels 1000 \
 # 	--no_optim_resume
 
-# vith14
-python -u /scratch/eo41/mae/eval_finetune.py \
-	--model vit_huge_patch14 \
-	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14/${SUBJECT}_vith14_checkpoint.pth" \
-	--save_prefix ${SUBJECT}_mae_vith14 \
-	--batch_size 119 \
-	--epochs 50 \
-	--num_workers 16 \
-	--lr 0.0001 \
-	--output_dir "/vast/eo41/sayavakepicutego4d_inft_0.02" \
-	--train_data_path "/scratch/work/public/imagenet/train" \
-	--val_data_path "/scratch/eo41/imagenet/val" \
-	--frac_retained 0.02 \
-	--num_labels 1000 \
-	--no_optim_resume
+# # vith14
+# python -u /scratch/eo41/mae/eval_finetune.py \
+# 	--model vit_huge_patch14 \
+# 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14/${SUBJECT}_vith14_checkpoint.pth" \
+# 	--save_prefix ${SUBJECT}_mae_vith14 \
+# 	--batch_size 119 \
+# 	--epochs 50 \
+# 	--num_workers 16 \
+# 	--lr 0.0001 \
+# 	--output_dir "/vast/eo41/sayavakepicutego4d_evals/0.02" \
+# 	--train_data_path "/scratch/work/public/imagenet/train" \
+# 	--val_data_path "/scratch/eo41/imagenet/val" \
+# 	--frac_retained 0.02 \
+# 	--num_labels 1000 \
+# 	--no_optim_resume
 
 # # vitl14
 # python -u /scratch/eo41/mae/eval_finetune.py \
@@ -92,21 +92,21 @@ python -u /scratch/eo41/mae/eval_finetune.py \
 # 	--num_labels 1000 \
 # 	--no_optim_resume
 
-# # vitb14
-# python -u /scratch/eo41/mae/eval_finetune.py \
-# 	--model vit_base_patch14 \
-# 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vitb14/${SUBJECT}_vitb14_checkpoint.pth" \
-# 	--save_prefix ${SUBJECT}_mae_vitb14 \
-# 	--batch_size 128 \
-# 	--epochs 50 \
-# 	--num_workers 16 \
-# 	--lr 0.0001 \
-# 	--output_dir "/vast/eo41/sayavakepicutego4d_evals/0.02" \
-# 	--train_data_path "/scratch/work/public/imagenet/train" \
-# 	--val_data_path "/scratch/eo41/imagenet/val" \
-# 	--frac_retained 0.02 \
-# 	--num_labels 1000 \
-# 	--no_optim_resume
+# vitb14
+python -u /scratch/eo41/mae/eval_finetune.py \
+	--model vit_base_patch14 \
+	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vitb14/${SUBJECT}_vitb14_checkpoint.pth" \
+	--save_prefix ${SUBJECT}_mae_vitb14 \
+	--batch_size 128 \
+	--epochs 50 \
+	--num_workers 16 \
+	--lr 0.0001 \
+	--output_dir "/vast/eo41/sayavakepicutego4d_inft_0.02" \
+	--train_data_path "/scratch/work/public/imagenet/train" \
+	--val_data_path "/scratch/eo41/imagenet/val" \
+	--frac_retained 0.02 \
+	--num_labels 1000 \
+	--no_optim_resume
 
 # # vits14
 # python -u /scratch/eo41/mae/eval_finetune.py \

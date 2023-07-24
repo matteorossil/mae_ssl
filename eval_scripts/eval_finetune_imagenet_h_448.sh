@@ -4,8 +4,8 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=240GB
 #SBATCH --time=15:00:00
-#SBATCH --job-name=mae_finetune_imagenet_5
-#SBATCH --output=mae_finetune_imagenet_5_%A_%a.out
+#SBATCH --job-name=mae_finetune_imagenet_h_448
+#SBATCH --output=mae_finetune_imagenet_h_448_%A_%a.out
 #SBATCH --array=0-12
 
 SUBJECTS=(

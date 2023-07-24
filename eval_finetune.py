@@ -87,7 +87,7 @@ def main(args):
     ])
 
     val_dataset = ImageFolder(args.val_data_path, transform=val_transform)
-    val_loader = DataLoader(val_dataset, batch_size=8*args.batch_size, shuffle=False, num_workers=args.num_workers, pin_memory=True)  # note we use a larger batch size for val
+    val_loader = DataLoader(val_dataset, batch_size=16*args.batch_size, shuffle=False, num_workers=args.num_workers, pin_memory=True)  # note we use a larger batch size for val
 
     train_dataset = ImageFolder(args.train_data_path, transform=train_transform)
     # few-shot finetuning
