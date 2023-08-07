@@ -55,8 +55,9 @@ echo $SAVE
 # # vit-s/14
 # srun python -u /scratch/eo41/mae/train_mae.py \
 # 	--model 'mae_vit_small_patch14' \
-# 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vits14/${SAVE}_vits14_checkpoint.pth" \
+# 	--resume "" \
 # 	--batch_size_per_gpu 512 \
+#	--mask_ratio 0.8 \
 # 	--num_workers 16 \
 # 	--lr 0.0003 \
 # 	--min_lr 0.0003 \
@@ -68,8 +69,9 @@ echo $SAVE
 # # vit-b/14
 # srun python -u /scratch/eo41/mae/train_mae.py \
 # 	--model 'mae_vit_base_patch14' \
-# 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vitb14/${SAVE}_vitb14_checkpoint.pth" \
-# 	--batch_size_per_gpu 128 \
+# 	--resume "" \
+# 	--batch_size_per_gpu 256 \
+#	--mask_ratio 0.8 \
 # 	--num_workers 16 \
 # 	--lr 0.0003 \
 # 	--min_lr 0.0003 \
@@ -81,8 +83,9 @@ echo $SAVE
 # # vit-l/14
 # srun python -u /scratch/eo41/mae/train_mae.py \
 # 	--model 'mae_vit_large_patch14' \
-# 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vitl14/${SAVE}_vitl14_checkpoint.pth" \
+# 	--resume "" \
 # 	--batch_size_per_gpu 256 \
+#	--mask_ratio 0.8 \
 # 	--num_workers 16 \
 # 	--lr 0.0003 \
 # 	--min_lr 0.0003 \
@@ -94,7 +97,8 @@ echo $SAVE
 # # vit-h/14
 # srun python -u /scratch/eo41/mae/train_mae.py \
 # 	--model 'mae_vit_huge_patch14' \
-# 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14/${SAVE}_vith14_checkpoint.pth" \
+# 	--resume "" \
+#	--mask_ratio 0.8 \
 # 	--batch_size_per_gpu 256 \
 # 	--num_workers 16 \
 # 	--lr 0.0001 \
@@ -107,7 +111,7 @@ echo $SAVE
 # # vit-h/14 @ 448px
 # srun python -u /scratch/eo41/mae/train_mae.py \
 # 	--model 'mae_vit_huge_patch14_448' \
-# 	--resume "/vast/eo41/sayavakepicutego4d_models/mae_vith14_448/${SAVE}_vith14_448_checkpoint.pth" \
+# 	--resume "" \
 # 	--input_size 448 \
 # 	--mask_ratio 0.8 \
 # 	--batch_size_per_gpu 42 \
