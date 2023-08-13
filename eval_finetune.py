@@ -139,14 +139,13 @@ def main(args):
 
     # hack: revise model's head with BN
     model.head = torch.nn.Sequential(torch.nn.BatchNorm1d(model.head.in_features, affine=False, eps=1e-6), model.head)
+    
     # finetune everything
     for _, p in model.named_parameters():
         p.requires_grad = True
     for _, p in model.head.named_parameters():
         p.requires_grad = True
 
-    # model = torch.nn.DataParallel(model)
-    # model_without_ddp = model.module
     model_without_ddp = model
     model.to(device)
     n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -158,9 +157,6 @@ def main(args):
     loss_scaler = NativeScaler()
     optimizer = torch.optim.AdamW(model.parameters(), args.lr, weight_decay=0.05)
     criterion = torch.nn.CrossEntropyLoss()
-
-    # # load if resuming from a checkpoint; I need to update the above resume probably
-    # misc.load_model(args=args, model_without_ddp=model_without_ddp, optimizer=optimizer, loss_scaler=loss_scaler)
 
     if args.eval:
         test_stats = evaluate(val_loader, model, device, args)
