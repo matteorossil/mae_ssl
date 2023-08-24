@@ -74,7 +74,7 @@ def get_args_parser():
 
 
 def main(args):
-    os.environ['WORLD_SIZE'] = str(torch.cuda.device_count()) # my addition for SLURM
+    #os.environ['WORLD_SIZE'] = str(torch.cuda.device_count()) # my addition for SLURM
     misc.init_distributed_mode(args)
     print(os.environ)
     print('job dir: {}'.format(os.path.dirname(os.path.realpath(__file__))))

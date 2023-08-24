@@ -9,6 +9,10 @@
 #SBATCH --job-name=mae_1M_blur
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
 
+export MASTER_ADDR=$(hostname -s)
+export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
+export WORLD_SIZE=1
+
 module purge
 
 singularity exec --nv \
@@ -23,4 +27,4 @@ singularity exec --nv \
 													--epochs 200 \
 													--output_dir /vast/mr6744/pretrained_models/ \
 													--data_path /vast/mr6744/SAYCAM/ \
-													--save_prefix 1M_blur"
+													--save_prefix vit_s_16_1M_blur"
