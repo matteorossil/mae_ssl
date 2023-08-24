@@ -6,7 +6,7 @@
 #SBATCH --time=48:00:00
 #SBATCH --mem=100GB
 #SBATCH --gres=gpu:a100:1
-#SBATCH --job-name=1M_blur
+#SBATCH --job-name=200K_deblur
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
 
 export MASTER_ADDR=$(hostname -s)
@@ -25,6 +25,6 @@ singularity exec --nv \
 													--lr 0.0003 \
 													--min_lr 0.0003 \
 													--weight_decay 0.0 \
-													--data_path /vast/mr6744/SAYCAM/ \
+													--data_path /vast/mr6744/SAYCAM_deblur/ \
 													--output_dir /vast/mr6744/pretrained_models/ \
-													--save_prefix vit_s_16_1M_blur"
+													--save_prefix vit_s_16_200K_deblur"
