@@ -5,13 +5,13 @@
 #SBATCH --cpus-per-task=20
 #SBATCH --time=0:10:00
 #SBATCH --mem=40GB
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:2
 #SBATCH --job-name=mae_1M_blur
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
 
 export MASTER_ADDR=$(hostname -s)
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
-export WORLD_SIZE=1
+export WORLD_SIZE=2
 
 module purge
 
