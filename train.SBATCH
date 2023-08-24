@@ -3,10 +3,10 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=20
-#SBATCH --time=1:00:00
-#SBATCH --mem=30GB
+#SBATCH --time=0:10:00
+#SBATCH --mem=10GB
 #SBATCH --gres=gpu:1
-#SBATCH --job-name=mae_b_1M
+#SBATCH --job-name=mae_1M_blur
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
 
 module purge

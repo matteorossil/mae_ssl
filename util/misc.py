@@ -227,6 +227,8 @@ def init_distributed_mode(args):
         args.world_size = int(os.environ['WORLD_SIZE'])
         args.rank = int(os.environ['SLURM_PROCID'])
         args.gpu = args.rank % torch.cuda.device_count()
+        os.environ['MASTER_ADDR'] = 'localhost'
+        os.environ['MASTER_PORT'] = '12355'
         print('world size, rank, gpu, device count:', args.world_size, args.rank, args.gpu, torch.cuda.device_count())
     elif torch.cuda.is_available():
         # launched naively with `python main_dino.py`
