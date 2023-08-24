@@ -19,6 +19,7 @@ from pathlib import Path
 
 import torch
 print(torch.__version__)
+print(torch.cuda.device_count())
 
 import torch.backends.cudnn as cudnn
 import torchvision.transforms as transforms

@@ -4,10 +4,11 @@
 #SBATCH --ntasks-per-node=2
 #SBATCH --cpus-per-task=8
 #SBATCH --time=00:10:00
-#SBATCH --mem=100GB
+#SBATCH --mem=50GB
 #SBATCH --gres=gpu:2
 #SBATCH --job-name=test
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
+#SBATCH --array=0
 
 export MASTER_ADDR=$(hostname -s)
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
