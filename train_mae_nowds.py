@@ -74,7 +74,9 @@ def get_args_parser():
 
 
 def main(args):
+    os.environ['WORLD_SIZE'] = str(torch.cuda.device_count())
     misc.init_distributed_mode(args)
+    print(os.environ)
     print('job dir: {}'.format(os.path.dirname(os.path.realpath(__file__))))
     print("{}".format(args).replace(', ', ',\n'))
 
