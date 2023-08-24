@@ -19,12 +19,14 @@ from pathlib import Path
 
 import torch
 print(torch.__version__)
-print(torch.cuda.device_count())
+print("devices:", torch.cuda.device_count())
 
 import torch.backends.cudnn as cudnn
 import torchvision.transforms as transforms
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader, DistributedSampler
+import torch.multiprocessing as mp
+from torch.distributed import destroy_process_group
 
 import timm
 assert timm.__version__ == "0.3.2"  # version check
@@ -74,9 +76,10 @@ def get_args_parser():
     return parser
 
 
-def main(args):
-    #os.environ['WORLD_SIZE'] = str(torch.cuda.device_count()) # my addition for SLURM
-    misc.init_distributed_mode(args)
+def main(rank, world_size, args):
+    print(os.environ)
+    misc.init_distributed_mode(rank, world_size, args)
+    print("###")
     print(os.environ)
     print('job dir: {}'.format(os.path.dirname(os.path.realpath(__file__))))
     print("{}".format(args).replace(', ', ',\n'))
@@ -124,6 +127,8 @@ def main(args):
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     print('Training time {}'.format(total_time_str))
+
+    destroy_process_group() # torch distributed
 
 
 def train_one_epoch(model: torch.nn.Module, data_loader: Iterable, optimizer: torch.optim.Optimizer, device: torch.device, loss_scaler, epoch, args=None):
@@ -190,4 +195,7 @@ if __name__ == '__main__':
     args = get_args_parser()
     args = args.parse_args()
     Path(args.output_dir).mkdir(parents=True, exist_ok=True)
-    main(args)
+    #main(args)
+
+    world_size = torch.cuda.device_count() # how many GPUs available in the machine
+    mp.spawn(main, args=(world_size,args), nprocs=world_size)
