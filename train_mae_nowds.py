@@ -90,6 +90,7 @@ def main(args):
         ])
     
     dataset = ImageFolder(args.data_path, transform=transform)
+    print("Len dataset:", len(dataset))
     sampler = DistributedSampler(dataset, num_replicas=misc.get_world_size(), rank=misc.get_rank(), shuffle=True)
     data_loader = DataLoader(dataset, sampler=sampler, batch_size=args.batch_size_per_gpu, num_workers=args.num_workers, pin_memory=args.pin_mem, drop_last=True)
 
@@ -97,7 +98,7 @@ def main(args):
     model = models_mae.__dict__[args.model](norm_pix_loss=args.norm_pix_loss)
     model.to(device)
 
-    model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu], find_unused_parameters=True)
+    model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu], find_unused_parameters=False) #find_unused_parameters=True
     model_without_ddp = model.module
     
     n_parameters = sum(p.numel() for p in model_without_ddp.parameters() if p.requires_grad)
