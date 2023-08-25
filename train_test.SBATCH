@@ -3,7 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=2
 #SBATCH --cpus-per-task=8
-#SBATCH --time=00:10:00
+#SBATCH --time=00:5:00
 #SBATCH --mem=50GB
 #SBATCH --gres=gpu:2
 #SBATCH --job-name=test
