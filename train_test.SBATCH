@@ -3,16 +3,18 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=2
 #SBATCH --cpus-per-task=8
-#SBATCH --time=00:5:00
+#SBATCH --time=00:10:00
 #SBATCH --mem=50GB
 #SBATCH --gres=gpu:2
 #SBATCH --job-name=test
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
-#SBATCH --array=0
 
-export MASTER_ADDR=$(hostname -s)
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
-export WORLD_SIZE=2
+export WORLD_SIZE=$(($SLURM_NNODES * $SLURM_NTASKS_PER_NODE))
+echo "WORLD_SIZE="$WORLD_SIZE
+
+export MASTER_ADDR="$(hostname -s).hpc.nyu.edu"
+echo "MASTER_ADDR="$MASTER_ADDR
 
 module purge
 
