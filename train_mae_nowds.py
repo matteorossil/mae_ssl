@@ -24,8 +24,6 @@ import torch.backends.cudnn as cudnn
 import torchvision.transforms as transforms
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader, DistributedSampler
-import torch.multiprocessing as mp
-from torch.distributed import destroy_process_group
 
 import timm
 assert timm.__version__ == "0.3.2"  # version check
@@ -75,11 +73,8 @@ def get_args_parser():
     return parser
 
 
-def main(rank, world_size, args):
-    print(os.environ)
-    misc.init_distributed_mode(rank, world_size, args)
-    print("###")
-    print(os.environ)
+def main(args):
+    misc.init_distributed_mode(args)
     print('job dir: {}'.format(os.path.dirname(os.path.realpath(__file__))))
     print("{}".format(args).replace(', ', ',\n'))
 
@@ -95,7 +90,6 @@ def main(rank, world_size, args):
         ])
     
     dataset = ImageFolder(args.data_path, transform=transform)
-    print("Len dataset:", len(dataset))
     sampler = DistributedSampler(dataset, num_replicas=misc.get_world_size(), rank=misc.get_rank(), shuffle=True)
     data_loader = DataLoader(dataset, sampler=sampler, batch_size=args.batch_size_per_gpu, num_workers=args.num_workers, pin_memory=args.pin_mem, drop_last=True)
 
@@ -103,7 +97,7 @@ def main(rank, world_size, args):
     model = models_mae.__dict__[args.model](norm_pix_loss=args.norm_pix_loss)
     model.to(device)
 
-    model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu], find_unused_parameters=False) #find_unused_parameters=True
+    model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu], find_unused_parameters=True)
     model_without_ddp = model.module
     
     n_parameters = sum(p.numel() for p in model_without_ddp.parameters() if p.requires_grad)
@@ -126,8 +120,6 @@ def main(rank, world_size, args):
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     print('Training time {}'.format(total_time_str))
-
-    destroy_process_group() # torch distributed
 
 
 def train_one_epoch(model: torch.nn.Module, data_loader: Iterable, optimizer: torch.optim.Optimizer, device: torch.device, loss_scaler, epoch, args=None):
@@ -194,7 +186,4 @@ if __name__ == '__main__':
     args = get_args_parser()
     args = args.parse_args()
     Path(args.output_dir).mkdir(parents=True, exist_ok=True)
-    #main(args)
-
-    world_size = torch.cuda.device_count() # how many GPUs available in the machine
-    mp.spawn(main, args=(world_size,args), nprocs=world_size)
+    main(args)

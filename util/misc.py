@@ -18,7 +18,7 @@ from pathlib import Path
 import numpy as np
 import torch
 import torch.distributed as dist
-from torch import inf
+from torch._six import inf
 
 
 class SmoothedValue(object):
@@ -213,7 +213,7 @@ def save_on_master(*args, **kwargs):
         torch.save(*args, **kwargs)
 
 
-def init_distributed_mode(rank, world_size, args):
+def init_distributed_mode(args):
     # launched with torch.distributed.launch
     if 'RANK' in os.environ and 'WORLD_SIZE' in os.environ:
         print('Launched with torch.distributed.launch')
@@ -221,26 +221,20 @@ def init_distributed_mode(rank, world_size, args):
         args.rank = int(os.environ['SLURM_PROCID'])
         args.gpu = args.rank % torch.cuda.device_count()
         print('world size, rank, gpu, device count:', args.world_size, args.rank, args.gpu, torch.cuda.device_count())
-    # launched with submit it on a slurm cluster
-    #elif 'SLURM_PROCID' in os.environ:
-        #print('Launched with slurm')
-        #args.world_size = int(os.environ['WORLD_SIZE'])
-        #args.rank = int(os.environ['SLURM_PROCID'])
-        #args.world_size = world_size
-        ##args.rank = rank
-        ##args.gpu = args.rank % torch.cuda.device_count()
-        #print('world size, rank, gpu, device count:', args.world_size, args.rank, args.gpu, torch.cuda.device_count())
+    # launched with submitit on a slurm cluster
+    elif 'SLURM_PROCID' in os.environ:
+        print('Launched with slurm')
+        args.world_size = int(os.environ['WORLD_SIZE'])
+        args.rank = int(os.environ['SLURM_PROCID'])
+        args.gpu = args.rank % torch.cuda.device_count()
+        print('world size, rank, gpu, device count:', args.world_size, args.rank, args.gpu, torch.cuda.device_count())
     elif torch.cuda.is_available():
         # launched naively with `python main_dino.py`
         # we manually add MASTER_ADDR and MASTER_PORT to env variables
-        #print('Will run the code on one GPU.')
-        #args.rank, args.gpu, args.world_size = 0, 0, 1
-        #args.rank, args.gpu, args.world_size = rank, rank, world_size
-        args.world_size = world_size
-        args.rank = rank
-        args.gpu = args.rank % torch.cuda.device_count()
-        #os.environ['MASTER_ADDR'] = 'localhost'
-        #os.environ['MASTER_PORT'] = '12357'
+        print('Will run the code on one GPU.')
+        args.rank, args.gpu, args.world_size = 0, 0, 1
+        os.environ['MASTER_ADDR'] = '127.0.0.1'
+        os.environ['MASTER_PORT'] = '29500'
     else:
         print('Does not support training without GPU.')
         sys.exit(1)
