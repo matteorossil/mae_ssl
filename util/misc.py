@@ -222,20 +222,25 @@ def init_distributed_mode(rank, world_size, args):
         args.gpu = args.rank % torch.cuda.device_count()
         print('world size, rank, gpu, device count:', args.world_size, args.rank, args.gpu, torch.cuda.device_count())
     # launched with submit it on a slurm cluster
-    elif 'SLURM_PROCID' in os.environ:
-        print('Launched with slurm')
-        args.world_size = int(os.environ['WORLD_SIZE'])
-        args.rank = int(os.environ['SLURM_PROCID'])
-        args.gpu = args.rank % torch.cuda.device_count()
-        print('world size, rank, gpu, device count:', args.world_size, args.rank, args.gpu, torch.cuda.device_count())
+    #elif 'SLURM_PROCID' in os.environ:
+        #print('Launched with slurm')
+        #args.world_size = int(os.environ['WORLD_SIZE'])
+        #args.rank = int(os.environ['SLURM_PROCID'])
+        #args.world_size = world_size
+        ##args.rank = rank
+        ##args.gpu = args.rank % torch.cuda.device_count()
+        #print('world size, rank, gpu, device count:', args.world_size, args.rank, args.gpu, torch.cuda.device_count())
     elif torch.cuda.is_available():
         # launched naively with `python main_dino.py`
         # we manually add MASTER_ADDR and MASTER_PORT to env variables
-        print('Will run the code on one GPU.')
+        #print('Will run the code on one GPU.')
         #args.rank, args.gpu, args.world_size = 0, 0, 1
-        args.rank, args.gpu, args.world_size = rank, rank, world_size
-        os.environ['MASTER_ADDR'] = 'localhost'
-        os.environ['MASTER_PORT'] = '12357'
+        #args.rank, args.gpu, args.world_size = rank, rank, world_size
+        args.world_size = world_size
+        args.rank = rank
+        args.gpu = args.rank % torch.cuda.device_count()
+        #os.environ['MASTER_ADDR'] = 'localhost'
+        #os.environ['MASTER_PORT'] = '12357'
     else:
         print('Does not support training without GPU.')
         sys.exit(1)
