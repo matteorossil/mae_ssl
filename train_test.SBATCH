@@ -10,7 +10,7 @@
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
 #SBATCH --array=0
 
-export MASTER_ADDR=$(hostname -s)
+export MASTER_ADDR=$(scontrol show hostnames $SLURM_JOB_NODELIST | head -n 1)-ib0
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
 export WORLD_SIZE=2
 
