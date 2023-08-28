@@ -15,6 +15,7 @@ echo "WORLD_SIZE="$WORLD_SIZE
 
 export MASTER_ADDR="$(hostname -s).hpc.nyu.edu"
 echo "MASTER_ADDR="$MASTER_ADDR
+
 module purge
 
 srun \
