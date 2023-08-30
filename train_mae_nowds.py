@@ -59,6 +59,7 @@ def get_args_parser():
     # Dataset parameters
     parser.add_argument('--data_path', default='/scratch/eo41/data/saycam/SAY_5fps_300s_{000000..000009}.tar', type=str, help='dataset path')
     parser.add_argument('--output_dir', default='./output_dir', help='path where to save, empty for no saving')
+    parser.add_argument('--log_dir', default='./output_dir', help='path where to tensorboard log')
     parser.add_argument('--device', default='cuda', help='device to use for training/testing')
     parser.add_argument('--start_epoch', default=0, type=int, metavar='N', help='start epoch')
     parser.add_argument('--num_workers', default=16, type=int)

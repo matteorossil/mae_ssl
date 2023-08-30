@@ -101,9 +101,6 @@ def get_args_parser():
     parser.add_argument('--dist_url', default='env://',
                         help='url used to set up distributed training')
 
-    parser.add_argument('--distributed', action='store_true')
-    parser.add_argument('--save_prefix', default='test2', type=str)
-
     return parser
 
 def main(args):
