@@ -2,7 +2,7 @@
 
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=2
-#SBATCH --cpus-per-task=20
+#SBATCH --cpus-per-task=8
 #SBATCH --time=0:10:00
 #SBATCH --mem=60GB
 #SBATCH --gres=gpu:2
@@ -30,6 +30,4 @@ srun \
 												--lr 0.0003 \
 												--data_path /vast/mr6744/SAYCAM_blur/ \
 												--output_dir /vast/mr6744/pretrained_models2/run2 \
-												--log_dir /vast/mr6744/pretrained_models2/log2 \
-												--save_prefix vit_s_16_200K_blur \
-												--resume /vast/mr6744/pretrained_models/run2/vit_s_16_200K_blur_checkpoint.pth"
+												--log_dir /vast/mr6744/pretrained_models2/log2"
