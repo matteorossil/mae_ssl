@@ -9,6 +9,13 @@
 #SBATCH --job-name=lin_probe
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
 
+export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
+export WORLD_SIZE=$(($SLURM_NNODES * $SLURM_NTASKS_PER_NODE))
+echo "WORLD_SIZE="$WORLD_SIZE
+
+export MASTER_ADDR="$(hostname -s).hpc.nyu.edu"
+echo "MASTER_ADDR="$MASTER_ADDR
+
 module purge
 
 singularity exec --nv \
@@ -26,4 +33,4 @@ singularity exec --nv \
 												--blr 0.1 \
 												--weight_decay 0.0 \
 												--nb_classes 1000 \
-												--data_path /scratch/work/public/ml-datasets/imagenet/ "
+												--data_path /scratch/work/public/ml-datasets/imagenet/"
