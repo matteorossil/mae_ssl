@@ -30,6 +30,6 @@ srun \
 												--min_lr 0.0003 \
 												--weight_decay 0.0 \
 												--data_path /vast/mr6744/SAYCAM_deblur/ \
-												--output_dir /vast/mr6744/pretrained_models/run2 \
+												--output_dir /vast/mr6744/pretrained_models/run3 \
 												--save_prefix vit_s_16_200K_deblur \
-												--resume /vast/mr6744/pretrained_models/vit_s_16_200K_deblur_checkpoint.pth"
+												--resume /vast/mr6744/pretrained_models/run2/vit_s_16_200K_deblur_checkpoint.pth"
