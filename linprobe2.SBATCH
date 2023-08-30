@@ -11,7 +11,8 @@
 
 module purge
 
-singularity exec --nv \
+srun \
+	singularity exec --nv \
 	--overlay /scratch/mr6744/pytorch/overlay-25GB-500K.ext3:ro \
     --overlay /scratch/work/public/ml-datasets/imagenet/imagenet-train.sqf:ro \
     --overlay /scratch/work/public/ml-datasets/imagenet/imagenet-val.sqf:ro \

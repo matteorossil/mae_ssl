@@ -18,7 +18,8 @@ echo "MASTER_ADDR="$MASTER_ADDR
 
 module purge
 
-singularity exec --nv \
+srun \
+	singularity exec --nv \
 	--overlay /scratch/mr6744/pytorch/overlay-25GB-500K.ext3:ro \
     --overlay /scratch/work/public/ml-datasets/imagenet/imagenet-train.sqf:ro \
     --overlay /scratch/work/public/ml-datasets/imagenet/imagenet-val.sqf:ro \
@@ -33,4 +34,4 @@ singularity exec --nv \
 												--blr 0.1 \
 												--weight_decay 0.0 \
 												--nb_classes 1000 \
-												--data_path /scratch/work/public/ml-datasets/imagenet/"
+												--data_path /imagenet"
