@@ -3,10 +3,10 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=8
-#SBATCH --time=0:10:00
+#SBATCH --time=48:00:00
 #SBATCH --mem=60GB
-#SBATCH --gres=gpu:1
-#SBATCH --job-name=test_200K_blur
+#SBATCH --gres=gpu:2
+#SBATCH --job-name=1M_blur
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
 
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
@@ -28,6 +28,6 @@ srun \
 												--model 'mae_vit_small_patch16' \
 												--num_workers 16 \
 												--lr 0.0003 \
-												--data_path /vast/mr6744/SAYCAM_blur/ \
-												--output_dir /vast/mr6744/pretrained_models2/run1 \
-												--log_dir /vast/mr6744/pretrained_models2/log1"
+												--data_path /vast/mr6744/SAYCAM/ \
+												--output_dir /vast/mr6744/pretrained_models2/1M_blur \
+												--log_dir /vast/mr6744/pretrained_models2/1M_blur"
