@@ -30,9 +30,77 @@ import timm.optim.optim_factory as optim_factory
 import util.misc as misc
 from util.misc import NativeScalerWithGradNormCount as NativeScaler
 
-import models_mae
+import models_mae_2
 
-from engine_pretrain import train_one_epoch
+from engine_pretrain_2 import train_one_epoch
+
+from typing import Any, Callable, cast, Dict, List, Optional, Tuple, Union
+
+import torchvision.transforms.functional as TF
+from torchvision.utils import save_image
+import random
+
+class NewDataset(datasets.ImageFolder): # (blur, deblur) pairs
+
+    def __init__(
+            self,
+            root: str,
+            transform: bool,
+            is_valid_file: Optional[Callable[[str], bool]] = None,
+        ):
+            super().__init__(
+                root,
+            )
+            self.transform = transform
+            self.random_resize_crop = transforms.RandomResizedCrop(224, scale=(0.2, 1.0), interpolation=3)
+
+            classes_deblur, class_to_idx_deblur = self.find_classes("/vast/mr6744/SAYCAM_deblur_new/")
+            samples_deblur = self.make_dataset("/vast/mr6744/SAYCAM_deblur_new/", class_to_idx_deblur, self.extensions, is_valid_file)
+
+            self.classes_deblur = classes_deblur
+            self.class_to_idx_deblur = class_to_idx_deblur
+            self.samples_deblur = samples_deblur
+            self.targets_deblur = [s[1] for s in samples_deblur]
+
+    def __getitem__(self, index: int) -> Tuple[Any, Any]:
+        """
+        Args:
+            index (int): Index
+
+        Returns:
+            tuple: (sample, target) where target is class_index of the target class.
+        """
+        path, target = self.samples[index]
+        path_deblur, target_deblur = self.samples_deblur[index]
+
+        #print(path)
+        #print(path_deblur)
+
+        sample = self.loader(path)
+        sample_deblur = self.loader(path_deblur)
+
+        if self.transform:
+            i, j, h, w = self.random_resize_crop.get_params(sample, self.random_resize_crop.scale, self.random_resize_crop.ratio)
+            hflip = random.random() > 0.5
+            sample = self.tf_trasforms(sample, i, j, h, w, hflip)
+            sample_deblur = self.tf_trasforms(sample_deblur, i, j, h, w, hflip)
+        else:
+            sample = TF.to_tensor(sample)
+            sample_deblur = TF.to_tensor(sample_deblur)
+
+        #save_image(sample, f'/home/mr6744/test/{index}.png')
+        #save_image(sample_deblur, f'/home/mr6744/test/{index}_deblur.png')
+
+        return sample, target, sample_deblur, target_deblur
+    
+    def tf_trasforms(self, img, i, j, h, w, hflip):
+
+        img = TF.resized_crop(img, i, j, h, w, self.random_resize_crop.size, self.random_resize_crop.interpolation, antialias=self.random_resize_crop.antialias)
+        if hflip: img = TF.hflip(img)
+        img = TF.to_tensor(img)
+        img = TF.normalize(img, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        
+        return img
 
 def get_args_parser():
     parser = argparse.ArgumentParser('MAE pre-training', add_help=False)
@@ -99,6 +167,8 @@ def get_args_parser():
     parser.add_argument('--dist_on_itp', action='store_true')
     parser.add_argument('--dist_url', default='env://',
                         help='url used to set up distributed training')
+    
+    parser.add_argument('--transforms', action="store_true")
 
     return parser
 
@@ -124,7 +194,8 @@ def main(args):
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
     
-    dataset_train = datasets.ImageFolder(os.path.join(args.data_path, ''), transform=transform_train)
+    dataset_train = NewDataset(os.path.join(args.data_path, ''), transform=args.transforms)
+    #dataset_train = datasets.ImageFolder(os.path.join(args.data_path, ''), transform=transform_train)
     #dataset_train = datasets.ImageFolder(os.path.join(args.data_path, 'train'), transform=transform_train)
     print(dataset_train)
 
@@ -153,7 +224,7 @@ def main(args):
     )
     
     # define the model
-    model = models_mae.__dict__[args.model](norm_pix_loss=args.norm_pix_loss)
+    model = models_mae_2.__dict__[args.model](norm_pix_loss=args.norm_pix_loss)
 
     model.to(device)
 
