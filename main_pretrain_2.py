@@ -54,8 +54,8 @@ class NewDataset(datasets.ImageFolder): # (blur, deblur) pairs
             self.transform = transform
             self.random_resize_crop = transforms.RandomResizedCrop(224, scale=(0.2, 1.0), interpolation=3)
 
-            classes_deblur, class_to_idx_deblur = self.find_classes("/vast/mr6744/SAYCAM_deblur_new/")
-            samples_deblur = self.make_dataset("/vast/mr6744/SAYCAM_deblur_new/", class_to_idx_deblur, self.extensions, is_valid_file)
+            classes_deblur, class_to_idx_deblur = self.find_classes("/home/mr6744/SAYCAM_deblur_new/")
+            samples_deblur = self.make_dataset("/home/mr6744/SAYCAM_deblur_new/", class_to_idx_deblur, self.extensions, is_valid_file)
 
             self.classes_deblur = classes_deblur
             self.class_to_idx_deblur = class_to_idx_deblur
@@ -80,6 +80,8 @@ class NewDataset(datasets.ImageFolder): # (blur, deblur) pairs
         sample_deblur = self.loader(path_deblur)
 
         if self.transform:
+            save_image(TF.to_tensor(sample), f'/home/mr6744/test/{index}.png')
+            save_image(TF.to_tensor(sample_deblur), f'/home/mr6744/test/{index}_deblur.png')
             i, j, h, w = self.random_resize_crop.get_params(sample, self.random_resize_crop.scale, self.random_resize_crop.ratio)
             hflip = random.random() > 0.5
             sample = self.tf_trasforms(sample, i, j, h, w, hflip)
@@ -88,8 +90,8 @@ class NewDataset(datasets.ImageFolder): # (blur, deblur) pairs
             sample = TF.to_tensor(sample)
             sample_deblur = TF.to_tensor(sample_deblur)
 
-        #save_image(sample, f'/home/mr6744/test/{index}.png')
-        #save_image(sample_deblur, f'/home/mr6744/test/{index}_deblur.png')
+        save_image(sample, f'/home/mr6744/test/{index}_transform.png')
+        save_image(sample_deblur, f'/home/mr6744/test/{index}_deblur_transform.png')
 
         return sample, target, sample_deblur, target_deblur
     
