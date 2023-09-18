@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=4
-#SBATCH --cpus-per-task=8
-#SBATCH --time=12:00:00
+#SBATCH --ntasks-per-node=2
+#SBATCH --cpus-per-task=16
+#SBATCH --time=48:00:00
 #SBATCH --mem=60GB
-#SBATCH --gres=gpu:4
+#SBATCH --gres=gpu:2
 #SBATCH --job-name=200K_tbd
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
 
@@ -29,6 +29,7 @@ srun \
 												--num_workers 16 \
 												--lr 0.0003 \
 												--data_path /vast/mr6744/SAYCAM_blur/ \
-												--output_dir /vast/mr6744/pretrained_models2/200K_blur_deblur_w_transforms \
-												--log_dir /vast/mr6744/pretrained_models2/200K_blur_deblur_w_transforms \
-                                                --transforms" 
+												--output_dir /vast/mr6744/pretrained_models2/200K_blur_deblur_w_transforms/run2 \
+												--log_dir /vast/mr6744/pretrained_models2/200K_blur_deblur_w_transforms/run2 \
+												--resume /vast/mr6744/pretrained_models2/200K_blur_deblur_w_transforms/checkpoint-240.pth \
+                                                --transforms"

@@ -51,3 +51,26 @@ python -u eval_finetune.py \
 	--num_labels 1000
 ```
 Here `frac_retained` is the fraction of the training set used for finetuning and can be set to do few-shot finetuning evals (*e.g.* `--frac_retained 0.01` corresponds to finetuning with 1% of the training data, *i.e.* 12-13 examples per class in the case of ImageNet).
+
+### Datasets
+
+* **SAYCAM:**              1M 224x224 blur crops     | 400 folders - 2500 each | ~30 fps |
+* **SAYCAM_blur:**         200K 224x224 blur crops   | 400 folders - 500 each  | ~6 fps  |
+* **SAYCAM_blur_full:**    200K 640x480 blur frames  | 400 folders - 500 each  | ~6 fps  |
+* **SAYCAM_deblur:**       200K 224x224 deblur crops | 400 folders - 500 each  | ~6 fps  | Notes: deblur with downsampling first
+* **SAYCAM_deblur_new:**   200K 224x224 deblur crops | 400 folders - 500 each  | ~6 fps  | Notes: deblur without downsampling first
+* **SAYCAM_large:**        1M 640x480 blur frames    | 400 folders - 2500 each | ~30 fps |
+* **SAYCAM_large_deblur:** 200K 640x480 deblur crops | 400 folders - 500 each  | ~6 fps  | Notes: deblur ofc without downsampling first
+
+### Pre-trained Models
+
+* **1M_blur:**                           Dataset: SAYCAM                           | Image Transformations: ALL                        |
+* **200K_blur:**                         Dataset: SAYCAM_blur                      | Image Transformations: ALL                        |
+* **200K_deblur:**                       Dataset: SAYCAM_deblur                    | Image Transformations: ALL                        |
+* **200K_deblur_new:**                   Dataset: SAYCAM_deblur_new                | Image Transformations: ALL                        |
+* **200K_blur_full:**                    Dataset: SAYCAM_blur_full                 | Image Transformations: ALL                        |
+* **200K_blur_full_:**                   Dataset: SAYCAM_blur_full                 | Image Transformations: ALL except normalization   |
+* **200K_deblur_new_full:**              Dataset: SAYCAM_large_deblur              | Image Transformations: ALL                        |
+* **200K_deblur_new_full_:**             Dataset: SAYCAM_large_deblur              | Image Transformations: ALL except normalization   |
+* **200K_blur_deblur_wo_transforms:**    Dataset: SAYCAM_blur & SAYCAM_deblur_new  | Image Transformations: NONE                       | Notes: blur/deblur_new pairs
+* **200K_blur_deblur_w_transforms:**     Dataset: SAYCAM_blur & SAYCAM_deblur_new  | Image Transformations: ALL                        | Notes: blur/deblur_new pairs
