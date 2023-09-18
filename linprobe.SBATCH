@@ -2,8 +2,8 @@
 
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=20
-#SBATCH --time=0:10:00
+#SBATCH --cpus-per-task=16
+#SBATCH --time=1:00:00
 #SBATCH --mem=50GB
 #SBATCH --gres=gpu:1
 #SBATCH --job-name=lin_probe
@@ -26,11 +26,11 @@ srun \
 	/scratch/work/public/singularity/cuda11.6.124-cudnn8.4.0.27-devel-ubuntu20.04.4.sif \
 	/bin/bash -c "source /ext3/env.sh; python -u main_linprobe.py \
 												--model vit_small_patch16 --cls_token \
-												--finetune /vast/mr6744/pretrained_models/run2/vit_s_16_200K_blur_checkpoint.pth \
+												--finetune /vast/mr6744/pretrained_models2/200K_blur/run2/checkpoint-999.pth \
 												--batch_size 128 \
 												--epochs 100 \
 												--num_workers 16 \
-												--output_dir /vast/mr6744/finetuned_models/ \
+												--output_dir /vast/mr6744/linear_evaluation/200K_blur \
 												--blr 0.1 \
 												--weight_decay 0.0 \
 												--nb_classes 1000 \

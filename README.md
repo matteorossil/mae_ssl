@@ -73,7 +73,7 @@ Here `frac_retained` is the fraction of the training set used for finetuning and
 * **200K_deblur_new_full:**              Dataset: SAYCAM_large_deblur              | Image Transformations: ALL                        |
 * **200K_deblur_new_full_:**             Dataset: SAYCAM_large_deblur              | Image Transformations: ALL except normalization   |
 
-* **200K_blur_deblur_wo_transforms:**    Dataset: SAYCAM_blur & SAYCAM_deblur_new  | Image Transformations: NONE                       | Notes: blur/deblur_new pairs
+* **200K_blur_deblur_wo_transforms:**    Dataset: SAYCAM_blur & SAYCAM_deblur_new  | Image Transformations: ONLY HFLIP                 | Notes: blur/deblur_new pairs
 * **200K_blur_deblur_w_transforms:**     Dataset: SAYCAM_blur & SAYCAM_deblur_new  | Image Transformations: ALL                        | Notes: blur/deblur_new pairs
 
 
