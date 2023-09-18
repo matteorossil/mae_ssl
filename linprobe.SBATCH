@@ -3,10 +3,10 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=16
-#SBATCH --time=1:00:00
+#SBATCH --time=01:00:00
 #SBATCH --mem=50GB
 #SBATCH --gres=gpu:1
-#SBATCH --job-name=lin_probe
+#SBATCH --job-name=lp_200K_blur
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
 
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)

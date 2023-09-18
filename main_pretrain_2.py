@@ -86,13 +86,12 @@ class NewDataset(datasets.ImageFolder): # (blur, deblur) pairs
             hflip = random.random() > 0.5
             sample = self.tf_trasforms(sample, i, j, h, w, hflip)
             sample_deblur = self.tf_trasforms(sample_deblur, i, j, h, w, hflip)
+
         else:
-            hflip = random.random() > 0.5
-            if hflip: 
-                sample = TF.hflip(sample)
-                sample_deblur = TF.hflip(sample_deblur)
-            sample = TF.to_tensor(sample)
-            sample_deblur = TF.to_tensor(sample_deblur)
+            #hflip = random.random() > 0.5
+            hflip = 0.
+            sample = self.tf_trasforms_2(sample, hflip)
+            sample_deblur = self.tf_trasforms_2(sample_deblur, hflip)
 
         #save_image(sample, f'/home/mr6744/test/{index}_transform.png')
         #save_image(sample_deblur, f'/home/mr6744/test/{index}_deblur_transform.png')
@@ -106,6 +105,14 @@ class NewDataset(datasets.ImageFolder): # (blur, deblur) pairs
         img = TF.to_tensor(img)
         img = TF.normalize(img, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         
+        return img
+    
+    def tf_trasforms_2(self, img, hflip=0):
+
+        if hflip: img = TF.hflip(img)
+        img = TF.to_tensor(img)
+        #img = TF.normalize(img, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+
         return img
 
 def get_args_parser():
@@ -175,6 +182,7 @@ def get_args_parser():
                         help='url used to set up distributed training')
     
     parser.add_argument('--transforms', action="store_true")
+    parser.add_argument('--transforms_no_crop', action="store_true")
 
     return parser
 

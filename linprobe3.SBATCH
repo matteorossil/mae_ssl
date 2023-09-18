@@ -2,12 +2,19 @@
 
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=20
-#SBATCH --time=48:00:00
+#SBATCH --cpus-per-task=16
+#SBATCH --time=12:00:00
 #SBATCH --mem=50GB
 #SBATCH --gres=gpu:1
-#SBATCH --job-name=2K_d_lin_probe
+#SBATCH --job-name=lp_1M_blur
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
+
+export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
+export WORLD_SIZE=$(($SLURM_NNODES * $SLURM_NTASKS_PER_NODE))
+echo "WORLD_SIZE="$WORLD_SIZE
+
+export MASTER_ADDR="$(hostname -s).hpc.nyu.edu"
+echo "MASTER_ADDR="$MASTER_ADDR
 
 module purge
 
@@ -19,12 +26,12 @@ srun \
 	/scratch/work/public/singularity/cuda11.6.124-cudnn8.4.0.27-devel-ubuntu20.04.4.sif \
 	/bin/bash -c "source /ext3/env.sh; python -u main_linprobe.py \
 												--model vit_small_patch16 --cls_token \
-												--finetune /vast/mr6744/pretrained_models/run2/vit_s_16_200K_deblur_checkpoint.pth \
+												--finetune /vast/mr6744/pretrained_models2/1M_blur/run3/... \
 												--batch_size 128 \
 												--epochs 100 \
 												--num_workers 16 \
-												--output_dir /vast/mr6744/finetuned_models/ \
+												--output_dir /vast/mr6744/linear_evaluation/1M_blur \
 												--blr 0.1 \
 												--weight_decay 0.0 \
 												--nb_classes 1000 \
-												--data_path /scratch/work/public/ml-datasets/imagenet/"
+												--data_path /imagenet"
