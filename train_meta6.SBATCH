@@ -2,11 +2,11 @@
 
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=2
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=20
 #SBATCH --time=48:00:00
 #SBATCH --mem=60GB
 #SBATCH --gres=gpu:2
-#SBATCH --job-name=200K_fnew_blur
+#SBATCH --job-name=200K_fb_new_blur
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
 
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
@@ -29,5 +29,6 @@ srun \
 												--num_workers 16 \
 												--lr 0.0003 \
 												--data_path /vast/mr6744/SAYCAM_blur_full \
-												--output_dir /vast/mr6744/pretrained_models2/200K_blur_full \
-												--log_dir /vast/mr6744/pretrained_models2/200K_blur_full"
+												--output_dir /vast/mr6744/pretrained_models2/200K_blur_full/run2 \
+												--log_dir /vast/mr6744/pretrained_models2/200K_blur_full/run2 \
+												--resume /vast/mr6744/pretrained_models2/200K_blur_full/checkpoint-220.pth"

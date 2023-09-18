@@ -29,6 +29,6 @@ srun \
 												--num_workers 16 \
 												--lr 0.0003 \
 												--data_path /vast/mr6744/SAYCAM_deblur/ \
-												--output_dir /vast/mr6744/pretrained_models2/200K_deblur/run2 \
-												--log_dir /vast/mr6744/pretrained_models2/200K_deblur/run2 \
-												--resume /vast/mr6744/pretrained_models2/200K_deblur/checkpoint-440.pth"
+												--output_dir /vast/mr6744/pretrained_models2/200K_deblur/run3 \
+												--log_dir /vast/mr6744/pretrained_models2/200K_deblur/run3 \
+												--resume /vast/mr6744/pretrained_models2/200K_deblur/run2/checkpoint-880.pth"
