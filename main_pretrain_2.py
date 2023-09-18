@@ -87,6 +87,10 @@ class NewDataset(datasets.ImageFolder): # (blur, deblur) pairs
             sample = self.tf_trasforms(sample, i, j, h, w, hflip)
             sample_deblur = self.tf_trasforms(sample_deblur, i, j, h, w, hflip)
         else:
+            hflip = random.random() > 0.5
+            if hflip: 
+                sample = TF.hflip(sample)
+                sample_deblur = TF.hflip(sample_deblur)
             sample = TF.to_tensor(sample)
             sample_deblur = TF.to_tensor(sample_deblur)
 
