@@ -13,6 +13,8 @@ from functools import partial
 
 import torch
 import torch.nn as nn
+from torchvision.utils import save_image
+import sys
 
 from timm.models.vision_transformer import PatchEmbed, Block
 
@@ -200,8 +202,40 @@ class MaskedAutoencoderViT(nn.Module):
 
     def forward(self, imgs, mask_ratio=0.75):
         #imgs:  B, C, H, W
+
         latent, mask, ids_restore = self.forward_encoder(imgs, mask_ratio)
         pred = self.forward_decoder(latent, ids_restore)  # [N, L, p*p*3]
+
+        print(imgs.shape)
+        print(mask.shape)
+        print(self.patchify(imgs).shape)
+
+        save_image(imgs, f'/home/mr6744/pretrained-mae/original.png')
+        img_patch = self.patchify(imgs)
+        mask_ = torch.where(mask > 0., 0., 1.)
+        print(mask)
+        print(mask_)
+
+        mask_ = torch.tensor([[0., 0., 1., 0., 0., 0., 0., 0., 1., 0., 1., 1., 0., 0., 1., 1., 0., 0.,
+         0., 0., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 1., 0., 0., 0., 1., 1.,
+         0., 0., 0., 1., 0., 0., 1., 0., 0., 1., 0., 1., 0., 0., 1., 0., 0., 0.,
+         1., 1., 0., 0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 1., 0., 0., 0.,
+         0., 0., 0., 1., 0., 0., 0., 0., 0., 0., 1., 0., 0., 1., 0., 0., 1., 0.,
+         0., 1., 0., 0., 0., 0., 0., 1., 0., 0., 0., 0., 0., 0., 1., 0., 0., 0.,
+         0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 1., 0., 1., 0., 1., 0., 0., 0.,
+         0., 0., 0., 0., 0., 1., 0., 0., 1., 0., 0., 0., 0., 0., 0., 1., 0., 0.,
+         1., 0., 0., 1., 0., 0., 0., 0., 1., 1., 0., 1., 0., 1., 0., 0., 0., 1.,
+         0., 0., 0., 0., 1., 0., 0., 0., 0., 0., 1., 0., 0., 1., 0., 0., 0., 0.,
+         0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0.]]).to("cuda")
+        
+        mask_ = mask_.unsqueeze(-1).repeat(1,1,img_patch.shape[-1])
+        
+        print(mask_.shape)
+        save_image(self.unpatchify(img_patch * mask_), f'/home/mr6744/pretrained-mae/original_masked.png')
+        save_image(self.unpatchify(pred), f'/home/mr6744/pretrained-mae/reconstructed.png')
+
+        sys.exit(0)
+
         loss = self.forward_loss(imgs, pred, mask)
         return loss, pred, mask
 

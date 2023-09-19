@@ -30,7 +30,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module, data_loa
     header = 'Epoch: [{}]'.format(epoch)
 
     optimizer.zero_grad()
-
+    
     for _, (samples, targets) in enumerate(metric_logger.log_every(data_loader, len(data_loader) // 1, header)):
 
         samples = samples.to(device, non_blocking=True)
