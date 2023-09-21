@@ -3,10 +3,10 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=16
-#SBATCH --time=01:00:00
+#SBATCH --time=48:00:00
 #SBATCH --mem=50GB
 #SBATCH --gres=gpu:1
-#SBATCH --job-name=lp_200K_blur
+#SBATCH --job-name=lp_200K_deblur_new
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
 
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
@@ -26,11 +26,11 @@ srun \
 	/scratch/work/public/singularity/cuda11.6.124-cudnn8.4.0.27-devel-ubuntu20.04.4.sif \
 	/bin/bash -c "source /ext3/env.sh; python -u main_linprobe.py \
 												--model vit_small_patch16 --cls_token \
-												--finetune /vast/mr6744/pretrained_models2/200K_blur/run2/checkpoint-999.pth \
+												--finetune /vast/mr6744/pretrained_models2/200K_deblur/run3/checkpoint-999.pth \
 												--batch_size 128 \
 												--epochs 50 \
 												--num_workers 16 \
-												--output_dir /vast/mr6744/linear_evaluation/200K_blur \
+												--output_dir /vast/mr6744/linear_evaluation/200K_deblur \
 												--blr 0.1 \
 												--weight_decay 0.0 \
 												--nb_classes 1000 \
