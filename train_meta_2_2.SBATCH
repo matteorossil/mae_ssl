@@ -29,6 +29,6 @@ srun \
 												--num_workers 16 \
 												--lr 0.0003 \
 												--data_path /vast/mr6744/SAYCAM_blur/ \
-												--output_dir /vast/mr6744/pretrained_models2/200K_blur_deblur_wo_transforms/run2 \
-												--log_dir /vast/mr6744/pretrained_models2/200K_blur_deblur_wo_transforms/run2 \
-												--resume /vast/mr6744/pretrained_models2/200K_blur_deblur_wo_transforms/checkpoint-420.pth"
+												--output_dir /vast/mr6744/pretrained_models2/200K_blur_deblur_wo_transforms/run3 \
+												--log_dir /vast/mr6744/pretrained_models2/200K_blur_deblur_wo_transforms/run3 \
+												--resume /vast/mr6744/pretrained_models2/200K_blur_deblur_wo_transforms/run2/checkpoint-820.pth"
