@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=2
+#SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=16
 #SBATCH --time=48:00:00
 #SBATCH --mem=50GB
-#SBATCH --gres=gpu:2
+#SBATCH --gres=gpu:rtx8000:1
 #SBATCH --job-name=lp_200K_blur
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
 
@@ -28,7 +28,7 @@ srun \
 												--model vit_small_patch16 --cls_token \
 												--finetune /vast/mr6744/pretrained_models2/200K_blur/run2/checkpoint-999.pth \
 												--batch_size 128 \
-												--epochs 50 \
+												--epochs 100 \
 												--num_workers 16 \
 												--output_dir /vast/mr6744/linear_evaluation/200K_blur \
 												--blr 0.1 \

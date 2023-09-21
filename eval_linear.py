@@ -33,6 +33,7 @@ from util.misc import NativeScalerWithGradNormCount as NativeScaler
 from torchvision import transforms as pth_transforms
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
+from torch.utils.data.sampler import SubsetRandomSampler
 
 import models_vit
 
@@ -71,6 +72,8 @@ def get_args_parser():
     parser.add_argument('--eval', action='store_true', help='Perform evaluation only')
     parser.add_argument('--num_workers', default=8, type=int)
     parser.add_argument("--save_prefix", default="", type=str, help="""prefix for saving checkpoint and log files""")
+    parser.add_argument("--frac_retained", default=1.0, type=float, choices=[0.010147, 0.02, 0.03, 0.05, 0.1, 1.0], help="""Fraction of train data retained for linear probing""")
+
 
     return parser
 
@@ -100,8 +103,7 @@ def main(args):
     ])
 
     if args.split:
-        from torch.utils.data.sampler import SubsetRandomSampler
-
+    
         val_dataset = ImageFolder(args.train_data_path, transform=val_transform)
         train_dataset = ImageFolder(args.train_data_path, transform=train_transform)
 
@@ -131,8 +133,23 @@ def main(args):
         val_loader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers, pin_memory=True)
 
         train_dataset = ImageFolder(args.train_data_path, transform=train_transform)
-        train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers, pin_memory=True)
-        
+
+        # few-shot finetuning
+        if args.frac_retained < 1.0:
+            print('Fraction of train data retained:', args.frac_retained)
+            num_train = len(train_dataset)
+            indices = list(range(num_train))
+            np.random.seed(0)
+            np.random.shuffle(indices)
+            train_idx = indices[:int(args.frac_retained * num_train)]
+            train_sampler = torch.utils.data.sampler.SubsetRandomSampler(train_idx)
+            train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers, pin_memory=True, sampler=train_sampler)
+            print(f"Data loaded with {len(train_idx)} train and {len(val_dataset)} val imgs.")
+        else:
+            print('Using all of train data')
+            train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers, pin_memory=True, drop_last=True, sampler=None)    
+            print(f"Data loaded with {len(train_dataset)} train and {len(val_dataset)} val imgs.")
+    
         print(f"Data loaded with {len(train_dataset)} train and {len(val_dataset)} val imgs.")
         print(f"{len(train_loader)} train and {len(val_loader)} val iterations per epoch.")
     # ============ done data ... ============
