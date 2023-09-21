@@ -206,6 +206,9 @@ class MaskedAutoencoderViT(nn.Module):
         latent, mask, ids_restore = self.forward_encoder(imgs, mask_ratio)
         pred = self.forward_decoder(latent, ids_restore)  # [N, L, p*p*3]
 
+
+        """
+
         print(imgs.shape)
         print(mask.shape)
         print(self.patchify(imgs).shape)
@@ -222,6 +225,7 @@ class MaskedAutoencoderViT(nn.Module):
         save_image(self.unpatchify(pred), f'/home/mr6744/pretrained-mae/reconstructed.png')
 
         sys.exit(0)
+        """
 
         loss = self.forward_loss(imgs, pred, mask)
         return loss, pred, mask
