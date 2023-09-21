@@ -3,7 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=16
-#SBATCH --time=48:00:00
+#SBATCH --time=01:00:00
 #SBATCH --mem=50GB
 #SBATCH --gres=gpu:rtx8000:1
 #SBATCH --job-name=lp_200K_blur
