@@ -208,6 +208,7 @@ class MaskedAutoencoderViT(nn.Module):
         pred = self.forward_decoder(latent, ids_restore)  # [N, L, p*p*3]
 
         #############################
+        """
         print(imgs.shape)
         print(mask.shape)
         print(self.patchify(imgs).shape)
@@ -229,6 +230,7 @@ class MaskedAutoencoderViT(nn.Module):
         print(self.unpatchify(pred)[0])
 
         sys.exit(0)
+        """
         #############################
 
         loss = self.forward_loss(imgs, pred, mask)
