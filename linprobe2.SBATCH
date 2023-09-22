@@ -28,7 +28,7 @@ srun \
 												--model vit_small_patch16 --cls_token \
 												--finetune /vast/mr6744/pretrained_models2/200K_deblur_new/run3/checkpoint-999.pth \
 												--batch_size 128 \
-												--epochs 50 \
+												--epochs 100 \
 												--num_workers 16 \
 												--output_dir /vast/mr6744/linear_evaluation/200K_deblur_new \
 												--blr 0.1 \

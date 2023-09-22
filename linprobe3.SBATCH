@@ -28,7 +28,7 @@ srun \
 												--model vit_small_patch16 --cls_token \
 												--finetune /vast/mr6744/pretrained_models2/1M_blur/run3/checkpoint-280.pth \
 												--batch_size 128 \
-												--epochs 50 \
+												--epochs 100 \
 												--num_workers 16 \
 												--output_dir /vast/mr6744/linear_evaluation/1M_blur \
 												--blr 0.1 \
