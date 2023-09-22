@@ -66,7 +66,7 @@ Here `frac_retained` is the fraction of the training set used for finetuning and
 
 * **1M_blur:**                           Dataset: SAYCAM                           | Image Transformations: ALL                          | Notes: Linear Eval
 * **200K_blur:**                         Dataset: SAYCAM_blur                      | Image Transformations: ALL                          | Notes: Linear Eval
-* **200K_deblur:**                       Dataset: SAYCAM_deblur                    | Image Transformations: ALL                          |
+* **200K_deblur:**                       Dataset: SAYCAM_deblur                    | Image Transformations: ALL                          | Notes: Linear Eval
 * **200K_deblur_new:**                   Dataset: SAYCAM_deblur_new                | Image Transformations: ALL                          | Notes: Linear Eval
 * **200K_blur_full:**                    Dataset: SAYCAM_blur_full                 | Image Transformations: ALL                          |
 * **200K_blur_full_:**                   Dataset: SAYCAM_blur_full                 | Image Transformations: ALL except normalization     |

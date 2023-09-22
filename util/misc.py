@@ -250,7 +250,7 @@ def init_distributed_mode(args):
         print('Does not support training without GPU.')
         sys.exit(1)
 
-    args.distributed = True
+    args.distributed = False
 
     torch.cuda.set_device(args.gpu)
     args.dist_backend = 'nccl'

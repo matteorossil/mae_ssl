@@ -13,13 +13,12 @@ from functools import partial
 
 import torch
 import torch.nn as nn
-from torchvision.utils import save_image
+from torchvision.utils import save_image, make_grid
 import sys
 
 from timm.models.vision_transformer import PatchEmbed, Block
 
 from util.pos_embed import get_2d_sincos_pos_embed
-
 
 class MaskedAutoencoderViT(nn.Module):
     """ Masked Autoencoder with VisionTransformer backbone"""
@@ -117,6 +116,8 @@ class MaskedAutoencoderViT(nn.Module):
         len_keep = int(L * (1 - mask_ratio))
         
         noise = torch.rand(N, L, device=x.device)  # noise in [0, 1]
+
+        print(noise)
         
         # sort noise for each sample
         ids_shuffle = torch.argsort(noise, dim=1)  # ascend: small is keep, large is remove
@@ -206,26 +207,29 @@ class MaskedAutoencoderViT(nn.Module):
         latent, mask, ids_restore = self.forward_encoder(imgs, mask_ratio)
         pred = self.forward_decoder(latent, ids_restore)  # [N, L, p*p*3]
 
-
-        """
-
+        #############################
         print(imgs.shape)
         print(mask.shape)
         print(self.patchify(imgs).shape)
 
-        save_image(imgs, f'/home/mr6744/pretrained-mae/original.png')
+        save_image(make_grid(imgs, 1), f'/home/mr6744/pretrained-mae/200K_blur/original.png')
         img_patch = self.patchify(imgs)
         mask_ = torch.where(mask > 0., 0., 1.)
-        print(mask)
         
         mask_ = mask_.unsqueeze(-1).repeat(1,1,img_patch.shape[-1])
         
         print(mask_.shape)
-        save_image(self.unpatchify(img_patch * mask_), f'/home/mr6744/pretrained-mae/original_masked.png')
-        save_image(self.unpatchify(pred), f'/home/mr6744/pretrained-mae/reconstructed.png')
+        print(mask_)
+
+        save_image(make_grid(self.unpatchify(img_patch * mask_), nrow=1), f'/home/mr6744/pretrained-mae/200K_blur/original_masked.png')
+        save_image(make_grid(self.unpatchify(pred), 1), f'/home/mr6744/pretrained-mae/200K_blur/reconstructed.png')
+
+        print(pred[0].shape)
+        print(self.unpatchify(pred)[0].shape)
+        print(self.unpatchify(pred)[0])
 
         sys.exit(0)
-        """
+        #############################
 
         loss = self.forward_loss(imgs, pred, mask)
         return loss, pred, mask
