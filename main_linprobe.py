@@ -147,7 +147,8 @@ def main(args):
     print(dataset_train)
     print(dataset_val)
 
-    if True: # args.distributed:
+    args.distributed = False
+    if args.distributed:
         num_tasks = misc.get_world_size()
         global_rank = misc.get_rank()
         sampler_train = torch.utils.data.DistributedSampler(
@@ -164,7 +165,18 @@ def main(args):
         else:
             sampler_val = torch.utils.data.SequentialSampler(dataset_val)
     else:
-        sampler_train = torch.utils.data.RandomSampler(dataset_train)
+        # few-shot finetuning
+        if args.frac_retained < 1.0:
+            print('Fraction of train data retained:', args.frac_retained)
+            num_train = len(dataset_train)
+            indices = list(range(num_train))
+            np.random.shuffle(indices)
+            train_idx = indices[:int(args.frac_retained * num_train)]
+            sampler_train = torch.utils.data.sampler.SubsetRandomSampler(train_idx)
+        else:
+            print('Using all of train data')
+            sampler_train = torch.utils.data.RandomSampler(dataset_train)
+
         sampler_val = torch.utils.data.SequentialSampler(dataset_val)
 
     if global_rank == 0 and args.log_dir is not None and not args.eval:
