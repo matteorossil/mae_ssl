@@ -110,6 +110,8 @@ def get_args_parser():
     parser.add_argument('--dist_url', default='env://',
                         help='url used to set up distributed training')
 
+    parser.add_argument("--frac_retained", default=1.0, type=float, choices=[0.010147, 0.02, 0.03, 0.05, 0.1, 1.0], help="""Fraction of train data retained for linear probing""")
+
     return parser
 
 
