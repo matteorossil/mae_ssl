@@ -31,6 +31,7 @@ srun \
 												--epochs 100 \
 												--num_workers 16 \
 												--output_dir /vast/mr6744/linear_evaluation/200K_deblur \
+												--log_dir /vast/mr6744/linear_evaluation/200K_deblur \
 												--blr 0.1 \
 												--weight_decay 0.0 \
 												--nb_classes 1000 \

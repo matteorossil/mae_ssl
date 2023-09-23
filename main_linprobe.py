@@ -149,8 +149,11 @@ def main(args):
     if args.frac_retained < 1.0:
         generator = torch.Generator().manual_seed(seed)
         dataset_train, _ = random_split(dataset_train, [args.frac_retained, 1 - args.frac_retained], generator=generator)
+        print(dataset_train.dataset)
+        print("New number of datapoints:", len(dataset_train))
+    else:
+        print(dataset_train)
         
-    print(dataset_train)
     print(dataset_val)
 
     if True: #args.distributed:
