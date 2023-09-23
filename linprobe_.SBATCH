@@ -5,7 +5,7 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --time=00:20:00
 #SBATCH --mem=50GB
-#SBATCH --gres=gpu:2
+#SBATCH --gres=gpu:v100:2
 #SBATCH --job-name=_lp_200K_blur
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
 
