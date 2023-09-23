@@ -37,6 +37,7 @@ from util.crop import RandomResizedCrop
 import models_vit
 
 from engine_finetune import train_one_epoch, evaluate
+from torch.utils.data import random_split
 
 
 def get_args_parser():
@@ -144,11 +145,15 @@ def main(args):
     
     dataset_train = datasets.ImageFolder(os.path.join(args.data_path, 'train'), transform=transform_train)
     dataset_val = datasets.ImageFolder(os.path.join(args.data_path, 'val'), transform=transform_val)
+
+    if args.frac_retained < 1.0:
+        generator = torch.Generator().manual_seed(seed)
+        dataset_train, _ = random_split(dataset_train, [args.frac_retained, 1 - args.frac_retained], generator=generator)
+        
     print(dataset_train)
     print(dataset_val)
 
-    args.distributed = False
-    if args.distributed:
+    if True: #args.distributed:
         num_tasks = misc.get_world_size()
         global_rank = misc.get_rank()
         sampler_train = torch.utils.data.DistributedSampler(
