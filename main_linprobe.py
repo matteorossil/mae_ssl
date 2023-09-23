@@ -294,8 +294,8 @@ def main(args):
             model, criterion, data_loader_train,
             optimizer, device, epoch, loss_scaler,
             max_norm=None,
-            #log_writer=log_writer,
-            #args=args
+            log_writer=log_writer,
+            args=args
         )
         if args.output_dir:
             misc.save_model(
