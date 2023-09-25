@@ -197,7 +197,7 @@ def main(args):
         dataset_train, sampler=sampler_train,
         batch_size=args.batch_size,
         num_workers=args.num_workers,
-        pin_memory=args.pin_mem,
+        pin_memory=False, #args.pin_mem,
         drop_last=True,
     )
 
@@ -205,7 +205,7 @@ def main(args):
         dataset_val, sampler=sampler_val,
         batch_size=args.batch_size,
         num_workers=args.num_workers,
-        pin_memory=args.pin_mem,
+        pin_memory=False, #args.pin_mem,
         drop_last=False
     )
 
