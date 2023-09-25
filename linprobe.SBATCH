@@ -3,7 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=16
-#SBATCH --time=12:00:00
+#SBATCH --time=24:00:00
 #SBATCH --mem=50GB
 #SBATCH --gres=gpu:1
 #SBATCH --job-name=lp_200K_blur
@@ -20,8 +20,8 @@ module purge
 
 singularity exec --nv \
 	--overlay /scratch/mr6744/pytorch/overlay-25GB-500K.ext3:ro \
-	--overlay /scratch/work/public/ml-datasets/imagenet/imagenet-train.sqf:ro \
-	--overlay /scratch/work/public/ml-datasets/imagenet/imagenet-val.sqf:ro \
+	--overlay /vast/work/public/ml-datasets/imagenet/imagenet-train.sqf:ro \
+	--overlay /vast/work/public/ml-datasets/imagenet/imagenet-val.sqf:ro \
 	/scratch/work/public/singularity/cuda11.6.124-cudnn8.4.0.27-devel-ubuntu20.04.4.sif \
 	/bin/bash -c "source /ext3/env.sh; python -u main_linprobe.py \
 										--model vit_small_patch16 --cls_token \
