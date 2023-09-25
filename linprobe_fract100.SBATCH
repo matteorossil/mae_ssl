@@ -21,8 +21,8 @@ module purge
 srun \
 	singularity exec --nv \
 	--overlay /scratch/mr6744/pytorch/overlay-25GB-500K.ext3:ro \
-    --overlay /scratch/work/public/ml-datasets/imagenet/imagenet-train.sqf:ro \
-    --overlay /scratch/work/public/ml-datasets/imagenet/imagenet-val.sqf:ro \
+    --overlay /vast/work/public/ml-datasets/imagenet/imagenet-train.sqf:ro \
+    --overlay /vast/work/public/ml-datasets/imagenet/imagenet-val.sqf:ro \
 	/scratch/work/public/singularity/cuda11.6.124-cudnn8.4.0.27-devel-ubuntu20.04.4.sif \
 	/bin/bash -c "source /ext3/env.sh; python -u main_linprobe.py \
 												--model vit_small_patch16 --cls_token \

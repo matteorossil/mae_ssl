@@ -18,12 +18,13 @@ echo "MASTER_ADDR="$MASTER_ADDR
 
 module purge
 
-singularity exec --nv \
-	--overlay /scratch/mr6744/pytorch/overlay-25GB-500K.ext3:ro \
-	--overlay /vast/work/public/ml-datasets/imagenet/imagenet-train.sqf:ro \
-	--overlay /vast/work/public/ml-datasets/imagenet/imagenet-val.sqf:ro \
-	/scratch/work/public/singularity/cuda11.6.124-cudnn8.4.0.27-devel-ubuntu20.04.4.sif \
-	/bin/bash -c "source /ext3/env.sh; python -u main_linprobe.py \
+srun \
+	singularity exec --nv \
+		--overlay /scratch/mr6744/pytorch/overlay-25GB-500K.ext3:ro \
+		--overlay /vast/work/public/ml-datasets/imagenet/imagenet-train.sqf:ro \
+		--overlay /vast/work/public/ml-datasets/imagenet/imagenet-val.sqf:ro \
+		/scratch/work/public/singularity/cuda11.6.124-cudnn8.4.0.27-devel-ubuntu20.04.4.sif \
+		/bin/bash -c "source /ext3/env.sh; python -u main_linprobe.py \
 										--model vit_small_patch16 --cls_token \
 										--finetune /vast/mr6744/pretrained_models2/200K_blur/run2/checkpoint-999.pth \
 										--batch_size 128 \
