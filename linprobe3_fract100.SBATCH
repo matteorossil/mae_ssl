@@ -3,10 +3,10 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=16
-#SBATCH --time=24:00:00
+#SBATCH --time=48:00:00
 #SBATCH --mem=50GB
 #SBATCH --gres=gpu:1
-#SBATCH --job-name=10_lp_1M_blur
+#SBATCH --job-name=100_lp_1M_blur
 #SBATCH --output=/scratch/mr6744/pytorch/outputs_slurm/%j.out
 
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
@@ -30,10 +30,10 @@ srun \
 												--batch_size 128 \
 												--epochs 100 \
 												--num_workers 16 \
-												--output_dir /vast/mr6744/linear_evaluation/1M_blur/fract10 \
-												--log_dir /vast/mr6744/linear_evaluation/1M_blur/fract10 \
+												--output_dir /vast/mr6744/linear_evaluation/1M_blur/fract100 \
+												--log_dir /vast/mr6744/linear_evaluation/1M_blur/fract100 \
 												--blr 0.1 \
 												--weight_decay 0.0 \
 												--nb_classes 1000 \
 												--data_path /imagenet \
-												--frac_retained 0.1"
+												--frac_retained 1.0"

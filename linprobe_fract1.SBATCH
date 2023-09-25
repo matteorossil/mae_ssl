@@ -3,7 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=16
-#SBATCH --time=24:00:00
+#SBATCH --time=01:00:00
 #SBATCH --mem=50GB
 #SBATCH --gres=gpu:1
 #SBATCH --job-name=lp_200K_blur
@@ -29,8 +29,8 @@ singularity exec --nv \
 										--batch_size 128 \
 										--epochs 100 \
 										--num_workers 16 \
-										--output_dir /vast/mr6744/linear_evaluation/200K_blur \
-										--log_dir /vast/mr6744/linear_evaluation/200K_blur \
+										--output_dir /vast/mr6744/linear_evaluation/200K_blur/fract1 \
+										--log_dir /vast/mr6744/linear_evaluation/200K_blur/fract1 \
 										--blr 0.1 \
 										--weight_decay 0.0 \
 										--nb_classes 1000 \
