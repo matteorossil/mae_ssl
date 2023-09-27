@@ -54,8 +54,8 @@ class NewDataset(datasets.ImageFolder): # (blur, deblur) pairs
             self.transform = transform
             self.random_resize_crop = transforms.RandomResizedCrop(224, scale=(0.2, 1.0), interpolation=3)
 
-            classes_deblur, class_to_idx_deblur = self.find_classes("/vast/mr6744/SAYCAM_deblur_new/")
-            samples_deblur = self.make_dataset("/vast/mr6744/SAYCAM_deblur_new/", class_to_idx_deblur, self.extensions, is_valid_file)
+            classes_deblur, class_to_idx_deblur = self.find_classes("/vast/mr6744/SAYCAM_large_deblur/")
+            samples_deblur = self.make_dataset("/vast/mr6744/SAYCAM_large_deblur/", class_to_idx_deblur, self.extensions, is_valid_file)
 
             self.classes_deblur = classes_deblur
             self.class_to_idx_deblur = class_to_idx_deblur
