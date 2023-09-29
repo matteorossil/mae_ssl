@@ -30,10 +30,11 @@ srun \
 												--batch_size 128 \
 												--epochs 100 \
 												--num_workers 16 \
-												--output_dir /vast/mr6744/linear_evaluation/200K_deblur_new_full/fract100 \
-												--log_dir /vast/mr6744/linear_evaluation/200K_deblur_new_full/fract100 \
+												--output_dir /vast/mr6744/linear_evaluation/200K_deblur_new_full/fract100/run2 \
+												--log_dir /vast/mr6744/linear_evaluation/200K_deblur_new_full/fract100/run2 \
 												--blr 0.1 \
 												--weight_decay 0.0 \
 												--nb_classes 1000 \
 												--data_path /imagenet \
-												--frac_retained 1.0"
+												--frac_retained 1.0 \
+												--resume /vast/mr6744/linear_evaluation/200K_deblur_new_full/fract100/checkpoint-72.pth "
