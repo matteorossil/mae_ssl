@@ -29,5 +29,6 @@ srun \
 												--num_workers 16 \
 												--lr 0.0003 \
 												--data_path /vast/mr6744/SAYCAM_deblur_new/ \
-												--output_dir /vast/mr6744/pretrained_models2/200K_deblur_new_noresize/ \
-												--log_dir /vast/mr6744/pretrained_models2/200K_deblur_new_noresize/"
+												--output_dir /vast/mr6744/pretrained_models2/200K_deblur_new_noresize/run2 \
+												--log_dir /vast/mr6744/pretrained_models2/200K_deblur_new_noresize/run2 \
+												--resume /vast/mr6744/pretrained_models2/200K_blur_deblur_full/checkpoint-700.pth"
