@@ -39,7 +39,6 @@ import models_vit
 from engine_finetune import train_one_epoch, evaluate
 from torch.utils.data import random_split
 
-
 def get_args_parser():
     parser = argparse.ArgumentParser('MAE linear probing for image classification', add_help=False)
     parser.add_argument('--batch_size', default=512, type=int,

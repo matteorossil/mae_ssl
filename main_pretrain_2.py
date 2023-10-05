@@ -75,8 +75,11 @@ class NewDataset(datasets.ImageFolder): # (blur, deblur) pairs
 
         #print(path)
         #print(path_deblur)
+        if random.random() > 0.5:
+            sample = self.loader(path)
+        else:
+            sample = self.loader(path_deblur)
 
-        sample = self.loader(path)
         sample_deblur = self.loader(path_deblur)
 
         if self.transform:
