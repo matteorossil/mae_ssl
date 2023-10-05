@@ -28,7 +28,6 @@ srun \
 												--model 'mae_vit_small_patch16' \
 												--num_workers 16 \
 												--lr 0.0003 \
-												--data_path /vast/mr6744/SAYCAM/ \
-												--output_dir /vast/mr6744/pretrained_models2/1M_blur/run5 \
-												--log_dir /vast/mr6744/pretrained_models2/1M_blur/run5 \
-												--resume /vast/mr6744/pretrained_models2/1M_blur/run4/checkpoint-380.pth"
+												--data_path /vast/mr6744/SAYCAM_1M_deblur/ \
+												--output_dir /vast/mr6744/pretrained_models2/1M_deblur \
+												--log_dir /vast/mr6744/pretrained_models2/1M_deblur "
