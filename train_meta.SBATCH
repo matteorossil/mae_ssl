@@ -3,7 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=2
 #SBATCH --cpus-per-task=12
-#SBATCH --time=48:00:00
+#SBATCH --time=24:00:00
 #SBATCH --mem=60GB
 #SBATCH --gres=gpu:2
 #SBATCH --job-name=1M_blur
@@ -29,5 +29,6 @@ srun \
 												--num_workers 16 \
 												--lr 0.0003 \
 												--data_path /vast/mr6744/SAYCAM_1M_deblur/ \
-												--output_dir /vast/mr6744/pretrained_models2/1M_deblur \
-												--log_dir /vast/mr6744/pretrained_models2/1M_deblur "
+												--output_dir /vast/mr6744/pretrained_models2/1M_deblur/run2 \
+												--log_dir /vast/mr6744/pretrained_models2/1M_deblur/run2 \
+												--resume /vast/mr6744/pretrained_models2/1M_deblur/checkpoint-140.pth "
