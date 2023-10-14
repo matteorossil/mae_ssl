@@ -61,7 +61,8 @@ Here `frac_retained` is the fraction of the training set used for finetuning and
 * **SAYCAM_deblur_new:**   200K 224x224 deblur crops | 400 folders - 500 each  | ~6 fps  | Notes: deblur without downsampling first
 * **SAYCAM_large:**        1M 640x480 blur frames    | 400 folders - 2500 each | ~30 fps |
 * **SAYCAM_large_deblur:** 200K 640x480 deblur crops | 400 folders - 500 each  | ~6 fps  | Notes: deblur ofc without downsampling first
-* **SAYCAM_1M_deblur:**    1M 224x224 deblur crops   | 400 folders - 500 each  | ~6 fps  | Notes: deblur ofc without downsampling first
+* **SAYCAM_1M_deblur:**    1M 640x480 deblur         | 400 folders - 500 each  | ~6 fps  | Notes: deblur ofc without downsampling first
+* **SAYCAM_1M_deblur_crop:** 1M 224x224 deblur crops | 400 folders - 500 each  | ~6 fps  | Notes: deblur ofc without downsampling first
 
 
 ### Pre-trained Models
@@ -77,4 +78,3 @@ Here `frac_retained` is the fraction of the training set used for finetuning and
 
 * **200K_blur_deblur_wo_transforms:**    Dataset: SAYCAM_blur & SAYCAM_deblur_new  | Image Transformations: NONE                         | Notes: blur/deblur_new pairs
 * **200K_blur_deblur_w_transforms:**     Dataset: SAYCAM_blur & SAYCAM_deblur_new  | Image Transformations: ALL                          | Notes: blur/deblur_new pairs
-
