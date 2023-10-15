@@ -54,15 +54,15 @@ Here `frac_retained` is the fraction of the training set used for finetuning and
 
 ### Datasets
 
-* **SAYCAM:**              1M 224x224 blur crops     | 400 folders - 2500 each | ~30 fps |
-* **SAYCAM_blur:**         200K 224x224 blur crops   | 400 folders - 500 each  | ~6 fps  |
-* **SAYCAM_blur_full:**    200K 640x480 blur frames  | 400 folders - 500 each  | ~6 fps  |
-* **SAYCAM_deblur:**       200K 224x224 deblur crops | 400 folders - 500 each  | ~6 fps  | Notes: deblur with downsampling first
-* **SAYCAM_deblur_new:**   200K 224x224 deblur crops | 400 folders - 500 each  | ~6 fps  | Notes: deblur without downsampling first
+* **SAYCAM:**              1M 224x224 blur crops     | 400 folders - 2500 each | ~30 fps | *
+* **SAYCAM_blur:**         200K 224x224 blur crops   | 400 folders - 500 each  | ~6 fps  | *
+* **SAYCAM_blur_full:**    200K 640x480 blur frames  | 400 folders - 500 each  | ~6 fps  | *
+* **SAYCAM_deblur:**       200K 224x224 deblur crops | 400 folders - 500 each  | ~6 fps  | Notes: deblur with downsampling first 
+* **SAYCAM_deblur_new:**   200K 224x224 deblur crops | 400 folders - 500 each  | ~6 fps  | Notes: deblur without downsampling first *
 * **SAYCAM_large:**        1M 640x480 blur frames    | 400 folders - 2500 each | ~30 fps |
-* **SAYCAM_large_deblur:** 200K 640x480 deblur crops | 400 folders - 500 each  | ~6 fps  | Notes: deblur ofc without downsampling first
-* **SAYCAM_1M_deblur:**    1M 640x480 deblur         | 400 folders - 500 each  | ~6 fps  | Notes: deblur ofc without downsampling first
-* **SAYCAM_1M_deblur_crop:** 1M 224x224 deblur crops | 400 folders - 500 each  | ~6 fps  | Notes: deblur ofc without downsampling first
+* **SAYCAM_large_deblur:** 200K 640x480 deblur crops | 400 folders - 500 each  | ~6 fps  | Notes: deblur ofc without downsampling first *
+* **SAYCAM_1M_deblur:**    1M 640x480 deblur         | 400 folders - 500 each  | ~6 fps  | Notes: deblur ofc without downsampling first *
+* **SAYCAM_1M_deblur_crop:** 1M 224x224 deblur crops | 400 folders - 500 each  | ~6 fps  | Notes: deblur ofc without downsampling first *
 
 
 ### Pre-trained Models
