@@ -29,5 +29,6 @@ srun \
 												--num_workers 16 \
 												--lr 0.0003 \
 												--data_path /vast/mr6744/SAYCAM_1M_deblur_crop/ \
-												--output_dir /vast/mr6744/pretrained_models2/1M_deblur_crop \
-												--log_dir /vast/mr6744/pretrained_models2/1M_deblur_crop "
+												--output_dir /vast/mr6744/pretrained_models2/1M_deblur_crop/run2 \
+												--resume /vast/mr6744/pretrained_models2/1M_deblur_crop/checkpoint-100.pth \
+												--log_dir /vast/mr6744/pretrained_models2/1M_deblur_crop/run2 "
